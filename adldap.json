@@ -9,12 +9,13 @@
     "product_name": "Active Directory LDAP",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2021 Splunk Inc.",
-    "app_version": "2.0.4",
-    "utctime_updated": "2021-06-04T19:14:01.000000Z",
+    "license": "Copyright (c) 2021-2022 Splunk Inc.",
+    "app_version": "2.0.7",
+    "utctime_updated": "2022-01-07T04:07:18.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
     "min_phantom_version": "4.9.39220",
+    "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
@@ -23,12 +24,32 @@
     "pip_dependencies": {
         "wheel": [
             {
+                "module": "certifi",
+                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+            },
+            {
+                "module": "chardet",
+                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+            },
+            {
                 "module": "ldap3",
                 "input_file": "wheels/ldap3-2.6.1-py2.py3-none-any.whl"
             },
             {
                 "module": "pyasn1",
                 "input_file": "wheels/pyasn1-0.4.7-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
             }
         ]
     },
