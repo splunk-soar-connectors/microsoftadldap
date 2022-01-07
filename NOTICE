@@ -1,22 +1,17 @@
 Splunk SOAR AD LDAP
-Copyright 2021-2022 Splunk Inc.
+Copyright (c) 2021-2022 Splunk Inc.
 
 Third-party Software Attributions:
-
-Library: pyasn1
-Version: 0.4.7
-License: BSD 2
-Copyright 2005-2019 Ilya Etingof <etingof@gmail.com>
 
 Library: ldap3
 Version: 2.6.1
 License: LGPL 3.0
 Copyright 2013-2018 Giovanni Cannata
 
-Library: pudb
-Version: 2019.2
-License: MIT
-Copyright 2009 Andreas Kloeckner and contributors
+Library: pyasn1
+Version: 0.4.7
+License: BSD 2
+Copyright 2005-2019 Ilya Etingof <etingof@gmail.com>
 
 Library: requests
 Version: 2.25.0
