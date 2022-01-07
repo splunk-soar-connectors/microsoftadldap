@@ -15,22 +15,23 @@
 #
 #
 # Phantom App imports
-import phantom.app as phantom
-# import json
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
+import json
+import os
+import ssl
 
 # switched from python-ldap to ldap3 for this app. -gsh
 import ldap3
 import ldap3.extend.microsoft.addMembersToGroups
 import ldap3.extend.microsoft.removeMembersFromGroups
 import ldap3.extend.microsoft.unlockAccount
+import phantom.app as phantom
+from ldap3 import Tls
 from ldap3.core.exceptions import LDAPSocketOpenError
 from ldap3.utils.dn import parse_dn
-from ldap3 import Tls
-import ssl
-import json
-import os
+from phantom.action_result import ActionResult
+# import json
+from phantom.base_connector import BaseConnector
+
 # from adldap_consts import *
 
 
@@ -799,8 +800,9 @@ class AdLdapConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
     import requests
 
     pudb.set_trace()
