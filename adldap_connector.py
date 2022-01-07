@@ -1,6 +1,6 @@
 # File: adldap_connector.py
 #
-# Copyright (c) 2021 Splunk Inc.
+# Copyright (c) 2021-2022 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,22 +15,23 @@
 #
 #
 # Phantom App imports
-import phantom.app as phantom
-# import json
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
+import json
+import os
+import ssl
 
 # switched from python-ldap to ldap3 for this app. -gsh
 import ldap3
 import ldap3.extend.microsoft.addMembersToGroups
 import ldap3.extend.microsoft.removeMembersFromGroups
 import ldap3.extend.microsoft.unlockAccount
+import phantom.app as phantom
+from ldap3 import Tls
 from ldap3.core.exceptions import LDAPSocketOpenError
 from ldap3.utils.dn import parse_dn
-from ldap3 import Tls
-import ssl
-import json
-import os
+from phantom.action_result import ActionResult
+# import json
+from phantom.base_connector import BaseConnector
+
 # from adldap_consts import *
 
 
@@ -251,7 +252,8 @@ class AdLdapConnector(BaseConnector):
                 )
         except Exception as e:
             if type(e).__name__ == "LDAPInvalidDnError":
-                error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and group(s) values must be in distinguishedName format"
+                error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and " \
+                            "group(s) values must be in distinguishedName format"
             else:
                 error_msg = str(e)
             return RetVal(
@@ -798,8 +800,9 @@ class AdLdapConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
     import requests
 
     pudb.set_trace()
