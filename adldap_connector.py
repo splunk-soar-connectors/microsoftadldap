@@ -251,7 +251,8 @@ class AdLdapConnector(BaseConnector):
                 )
         except Exception as e:
             if type(e).__name__ == "LDAPInvalidDnError":
-                error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and group(s) values must be in distinguishedName format"
+                error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and " \
+                            "group(s) values must be in distinguishedName format"
             else:
                 error_msg = str(e)
             return RetVal(
