@@ -2,7 +2,7 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2\.0\.6  
+Connector Version: 2\.0\.7
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): "\.\*"  
