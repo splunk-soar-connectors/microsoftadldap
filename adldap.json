@@ -14,7 +14,7 @@
     "utctime_updated": "2022-01-07T04:07:18.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "4.9.39220",
+    "min_phantom_version": "5.0.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
