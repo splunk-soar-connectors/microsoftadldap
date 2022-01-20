@@ -33,9 +33,7 @@ from phantom.action_result import ActionResult
 # import json
 from phantom.base_connector import BaseConnector
 
-from adldap_const import *
-
-# from adldap_consts import *
+from adldap_consts import *
 
 
 class RetVal(tuple):
