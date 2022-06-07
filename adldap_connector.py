@@ -32,6 +32,7 @@ from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
 # import json
 from phantom.base_connector import BaseConnector
+from phantom_common import paths
 
 from adldap_consts import *
 
@@ -64,7 +65,7 @@ class AdLdapConnector(BaseConnector):
 
         try:
             if self._validate_ssl_cert:
-                tls = Tls(validate=ssl.CERT_REQUIRED)
+                tls = Tls(ca_certs_file=paths.CA_CERTS_PEM, validate=ssl.CERT_REQUIRED)
             else:
                 tls = Tls(validate=ssl.CERT_NONE)
 
