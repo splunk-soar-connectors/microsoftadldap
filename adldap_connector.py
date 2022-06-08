@@ -30,11 +30,9 @@ from ldap3 import Tls
 from ldap3.core.exceptions import LDAPSocketOpenError
 from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
-from phantom_common import paths
-
-
 # import json
 from phantom.base_connector import BaseConnector
+from phantom_common import paths
 
 from adldap_consts import *
 
