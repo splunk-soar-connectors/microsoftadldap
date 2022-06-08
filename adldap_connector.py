@@ -30,9 +30,11 @@ from ldap3 import Tls
 from ldap3.core.exceptions import LDAPSocketOpenError
 from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
+from phantom_common import paths
+
+
 # import json
 from phantom.base_connector import BaseConnector
-from phantom_common import paths
 
 from adldap_consts import *
 
@@ -409,11 +411,13 @@ class AdLdapConnector(BaseConnector):
         directory to a new OU.
         """
         action_result = self.add_action_result(ActionResult(dict(param)))
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         summary = action_result.update_summary({})
         ar_data = {}
 
         obj = param['object']
         destination_ou = param['destination_ou']
+        self.debug_print("Moving an object in AD")
 
         if not self._ldap_bind():
             return RetVal(action_result.set_status(phantom.APP_ERROR))
@@ -455,6 +459,7 @@ class AdLdapConnector(BaseConnector):
 
     def _handle_get_attributes(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         summary = action_result.update_summary({})
 
         if not self._ldap_bind():
@@ -462,6 +467,7 @@ class AdLdapConnector(BaseConnector):
 
         query = "(|"
         principal = [i.strip() for i in param['principals'].split(';')]
+        self.debug_print("Fetching attributes for a principal")
 
         # build a query on the fly with the principals provided
         for i in principal:
@@ -574,7 +580,7 @@ class AdLdapConnector(BaseConnector):
 
         return self._ldap_connection.response_to_json()
 
-    def _handle_query(self, param):
+    def _handle_run_query(self, param):
         """
         This method handles arbitrary LDAP queries for
         those who are skilled w/ that syntax.
@@ -726,6 +732,34 @@ class AdLdapConnector(BaseConnector):
             action_result.add_data(ar_data)
             return RetVal(action_result.set_status(phantom.APP_ERROR))
 
+    def _handle_add_group_members(self, param):
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.debug_print("Adding objects to groups")
+
+        return self._handle_group_members(param, True)
+
+    def _handle_remove_group_members(self, param):
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.debug_print("Removing objects from groups")
+
+        return self._handle_group_members(param, False)
+
+    def _handle_disable_account(self, param):
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.debug_print("Disabling an AD account")
+
+        return self._handle_account_status(param, disable=True)
+
+    def _handle_enable_account(self, param):
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.debug_print("Enabling a disabled AD account")
+
+        return self._handle_account_status(param, disable=False)
+
     def handle_action(self, param):
 
         ret_val = phantom.APP_SUCCESS
@@ -738,22 +772,22 @@ class AdLdapConnector(BaseConnector):
             ret_val = self._handle_test_connectivity(param)
 
         elif action_id == 'run_query':
-            ret_val = self._handle_query(param)
+            ret_val = self._handle_run_query(param)
 
         elif action_id == 'add_group_members':
-            ret_val = self._handle_group_members(param, True)
+            ret_val = self._handle_add_group_members(param)
 
         elif action_id == 'remove_group_members':
-            ret_val = self._handle_group_members(param, False)
+            ret_val = self._handle_remove_group_members(param)
 
         elif action_id == 'unlock_account':
             ret_val = self._handle_unlock_account(param)
 
         elif action_id == 'disable_account':
-            ret_val = self._handle_account_status(param, disable=True)
+            ret_val = self._handle_disable_account(param)
 
         elif action_id == 'enable_account':
-            ret_val = self._handle_account_status(param, disable=False)
+            ret_val = self._handle_enable_account(param)
 
         elif action_id == "move_object":
             ret_val = self._handle_move_object(param)
