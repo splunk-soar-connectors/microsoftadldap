@@ -14,14 +14,14 @@
 
 <html>
   <body>
-    <p><h2>App Information</h2>
+    <p><h2>App Information</h2></p>
         <ul>
           <li>This LDAP application utilizes the LDAP3 library for Python. This was chosen, in part, due to the pythonic design of the library
             and the quality of the documentation. Both SSL and TLS are supported.</li>
           <li>Please make sure to view additional documentation for this app on our <a href="https://github.com/phantomcyber/phantom-apps/tree/next/Apps/phadldap#readme">GitHub Open Source Repo!</a> </li>
         </ul>
 
-    <p><h2>LDAP Ports Requirements (Based on Standard Guidelines of <a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" target="_blank">IANA ORG</a>)</h2>
+    <p><h2>LDAP Ports Requirements (Based on Standard Guidelines of <a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" target="_blank">IANA ORG</a>)</h2></p>
       <ul>
         <li>LDAP(service) TCP(transport protocol) - 389</li>
         <li>LDAP(service) UDP(transport protocol) - 389</li>
@@ -29,7 +29,7 @@
         <li>LDAP(service) UDP(transport protocol) over TLS/SSL (was sldap) - 636</li>
       </ul>
 
-    <p><h2>Asset Configuration</h2>
+    <p><h2>Asset Configuration</h2></p>
 
       The asset for this app requires an account with which to Bind and perform actions. If you are only ever going to perform information gathering tasks
       (e.g. getting account attributes) then a standard user account would be fine. However, if you plan on doing things like Unlocking,
@@ -38,7 +38,20 @@
       to a service account with a very strong password. Lastly, it is strongly recommended to use SSL and disallow insecure (plain text and unsigned binds)
       if at all possible.
 
-    <p><h2>Run Query Action</h2>
+      <p><h2>To add a custom certificate to the certificate store, follow the below steps:</h2></p>
+      <ul>
+          <li> Need to install the certificate on the server </li>
+          <ul>
+            <li>Upload the SSL certificate on the server</li>
+            <li>Go to /opt/phantom/bin and execute the import_cert.py script using command: 
+              <br>
+              <b>phenv python3 import_cert.py -i "path_of_certificate_on_server"</b></li>
+          </ul>
+          <li>Go to etc/hosts using the root user. Assign the domain to IP to use the SSL certificate</li>
+      </ul>
+      <b>Note:</b> For reference: <a href="https://docs.splunk.com/Documentation/SOARonprem/latest/Admin/AddOrRemoveCertificates" target="_blank">Splunk Docs</a>
+
+    <p><h2>Run Query Action</h2></p>
       This action provides the user the ability to run generic queries with the LDAP syntax. The action takes a filter (in LDAP syntax), an optional
       search base to search within, and specific attributes that you would like to return.
       <ul>
