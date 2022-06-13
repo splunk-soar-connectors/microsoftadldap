@@ -295,6 +295,7 @@ class AdLdapConnector(BaseConnector):
         if param["use_samaccountname"]:
             user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
             if len(user_dn) == 0 or user_dn[user] is False:
+                ar_data["unlocked"] = summary["unlocked"] = False
                 return RetVal(action_result.set_status(
                     phantom.APP_ERROR
                 ))
@@ -305,6 +306,7 @@ class AdLdapConnector(BaseConnector):
             ar_data["user_dn"] = user
 
         if not self._ldap_bind():
+            ar_data["unlocked"] = summary["unlocked"] = False
             return RetVal(action_result.set_status(phantom.APP_ERROR))
 
         try:
@@ -314,7 +316,7 @@ class AdLdapConnector(BaseConnector):
             )
             ar_data["unlocked"] = True
         except Exception as e:
-            ar_data["unlocked"] = False
+            ar_data["unlocked"] = summary["unlocked"] = False
             return RetVal(action_result.set_status(
                 phantom.APP_ERROR,
                 "",
@@ -623,11 +625,13 @@ class AdLdapConnector(BaseConnector):
     def _handle_reset_password(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
         user = param['user'].lower()
+        summary = action_result.update_summary({})
 
         ar_data = {}
         if param["use_samaccountname"]:
             user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
             if len(user_dn) == 0 or user_dn[user] is False:
+                ar_data["reset"] = summary["reset"] = False
                 return RetVal(action_result.set_status(
                     phantom.APP_ERROR
                 ))
@@ -642,6 +646,7 @@ class AdLdapConnector(BaseConnector):
         changes["pwdlastset"] = [(ldap3.MODIFY_REPLACE, [str(0)])]
 
         if not self._ldap_bind():
+            ar_data["reset"] = summary["reset"] = False
             return phantom.APP_ERROR
 
         try:
@@ -652,6 +657,7 @@ class AdLdapConnector(BaseConnector):
             )
             self.debug_print("[DEBUG] handle_reset_attribute, ret = {}".format(ret))
         except Exception as e:
+            ar_data["reset"] = summary["reset"] = False
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR,
@@ -659,7 +665,6 @@ class AdLdapConnector(BaseConnector):
                     None)
             )
 
-        summary = action_result.update_summary({})
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
 
         if ret:
@@ -683,13 +688,14 @@ class AdLdapConnector(BaseConnector):
         user = param['user'].lower()
         pwd = param['password']
         confirm_pwd = param['confirm_password']
-        if pwd != confirm_pwd:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Passwords do not match."), None)
-
         ar_data = {}
+        if pwd != confirm_pwd:
+            ar_data["set"] = summary["set"] = False
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Passwords do not match."), None)
 
         if not self._ldap_bind():
             self.debug_print("[DEBUG] handle_set_password - no bind")
+            ar_data["set"] = summary["set"] = False
             return RetVal(action_result.set_status(
                 phantom.APP_ERROR,
                 self._ldap_bind.result
@@ -698,6 +704,7 @@ class AdLdapConnector(BaseConnector):
         if param["use_samaccountname"]:
             user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
             if len(user_dn) == 0 or user_dn[user] is False:
+                ar_data["set"] = summary["set"] = False
                 return RetVal(action_result.set_status(
                     phantom.APP_ERROR
                 ))
@@ -713,6 +720,7 @@ class AdLdapConnector(BaseConnector):
             ret = self._ldap_connection.extend.microsoft.modify_password(user, pwd)
         except Exception as e:
             self.debug_print("[DEBUG] handle_set_password, e = {}".format(str(e)))
+            ar_data["set"] = summary["set"] = False
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR,
