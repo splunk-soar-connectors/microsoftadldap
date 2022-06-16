@@ -174,7 +174,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "added member(s) to group(s)."
+                        "added member(s) to group(s)"
                     ]
                 },
                 {
@@ -302,7 +302,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "removed member(s) to group(s)."
+                        "removed member(s) from group(s)"
                     ]
                 },
                 {
