@@ -118,7 +118,7 @@ class AdLdapConnector(BaseConnector):
                 return phantom.APP_SUCCESS
 
         except Exception as e:
-            self.debug_print("[DEBUG] ldap_bind, e = {}".format(self._get_error_message_from_exception(e)))
+            self.debug_print("[DEBUG] ldap_bind, e = {}".format(str(e)))
             if action_result:
                 return action_result.set_status(
                     phantom.APP_ERROR, self._get_error_message_from_exception(e))
@@ -163,7 +163,7 @@ class AdLdapConnector(BaseConnector):
         try:
             dn = json.loads(self._query(param=query_params))
         except LDAPSocketOpenError as e:
-            self.debug_print("[DEBUG] {}".format(self._get_error_message_from_exception(e)))
+            self.debug_print("[DEBUG] {}".format(str(e)))
             return {}
         except Exception as e:
             self.debug_print("[DEBUG] Invalid server address {}".format(self._get_error_message_from_exception(e)))
@@ -200,7 +200,7 @@ class AdLdapConnector(BaseConnector):
             return [i for i in self._ldap_connection.response
                     if i['type'] != 'searchResRef']
         except Exception as e:
-            self.debug_print("[DEBUG] get_filtered_response(), exception: {}".format(self._get_error_message_from_exception(e)))
+            self.debug_print("[DEBUG] get_filtered_response(), exception: {}".format(str(e)))
             return []
 
     def _handle_group_members(self, param, add):
@@ -392,12 +392,9 @@ class AdLdapConnector(BaseConnector):
                     (ldap3.MODIFY_REPLACE, [mod_uac])
                 ]})
             if not res:
-                if self._ldap_connection.result:
-                    return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result)
-                else:
-                    return action_result.set_status(phantom.APP_ERROR, "Error message unavailable")
+                return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result)
         except Exception as e:
-            self.debug_print("[DEBUG] disable_account error = {}".format(self._get_error_message_from_exception(e)))
+            self.debug_print("[DEBUG] disable_account error = {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, self._get_error_message_from_exception(e))
 
         summary['account_status'] = actstr
