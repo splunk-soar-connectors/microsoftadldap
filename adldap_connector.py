@@ -160,14 +160,10 @@ class AdLdapConnector(BaseConnector):
             "filter": filter
         }
 
-        try:
-            dn = json.loads(self._query(param=query_params))
-        except LDAPSocketOpenError as e:
-            self.debug_print("[DEBUG] {}".format(str(e)))
-            return {}
-        except Exception as e:
-            self.debug_print("[DEBUG] Invalid server address {}".format(self._get_error_message_from_exception(e)))
-            return {}
+        ret_val, dn = self._query(action_result, query_params)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status(), {}
+        dn = json.loads(dn)
 
         # construct a dict of Name = False (default) for each samaccountname given
         # then, if we find our samaccountname in the result, grab the distinguishedname,
@@ -183,13 +179,7 @@ class AdLdapConnector(BaseConnector):
 
         # if action_result, add summary regarding number of records requested
         # vs number of records found.
-        if action_result:
-            action_result.update_summary({
-                "requested_user_records": len(sam),
-                "found_user_records": len([k for (k, v) in list(return_value.items())
-                                           if v is not False])
-            })
-        return return_value
+        return action_result.set_status(phantom.APP_SUCCESS), return_value
 
     def _get_filtered_response(self):
         """
@@ -225,7 +215,14 @@ class AdLdapConnector(BaseConnector):
             group_nf = []   # not found groups
 
             # finding users dn by sam
-            t_users = self._sam_to_dn(members, action_result=action_result)
+            ret_val, t_users = self._sam_to_dn(members, action_result=action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+            action_result.update_summary({
+                "requested_user_records": len(members),
+                "found_user_records": len([k for (k, v) in list(t_users.items())
+                                            if v is not False])
+            })
             for k, v in list(t_users.items()):
                 if v is False:
                     member_nf.append(k)
@@ -237,7 +234,7 @@ class AdLdapConnector(BaseConnector):
             # cost for arguably greater readability.
 
             # finding groups dn by sam
-            t_group = self._sam_to_dn(groups)   # omit action_result to avoid updating user count
+            ret_val, t_group = self._sam_to_dn(groups, action_result=action_result)   # omit action_result to avoid updating user count
             for k, v in list(t_group.items()):
                 if v is False:
                     group_nf.append(k)
@@ -306,11 +303,13 @@ class AdLdapConnector(BaseConnector):
         ar_data = {}            # data for action_result
 
         if param["use_samaccountname"]:
-            user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["unlocked"] = summary["unlocked"] = False
                 action_result.add_data(ar_data)
-                return action_result.set_status(phantom.APP_ERROR)
+                return action_result.get_status()
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
             user = user_dn[user]
@@ -356,7 +355,9 @@ class AdLdapConnector(BaseConnector):
 
         # let the analyst use samaccountname if they wish
         if param["use_samaccountname"]:
-            user_info = self._sam_to_dn([user])
+            ret_val, user_info = self._sam_to_dn([user], action_result=action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             ar_data["samaccountname"] = user
             if user_info[user] is False:
                 return action_result.set_status(phantom.APP_ERROR, "No users found")
@@ -372,7 +373,11 @@ class AdLdapConnector(BaseConnector):
                 "attributes": "useraccountcontrol",
                 "filter": "(distinguishedname={})".format(user)
             }
-            resp = json.loads(self._query(query_params))
+            ret_val, resp = self._query(action_result, query_params)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+            resp = json.loads(resp)
+
             if len(resp['entries']) == 0:
                 return action_result.set_status(phantom.APP_ERROR, "No user found")
 
@@ -466,10 +471,9 @@ class AdLdapConnector(BaseConnector):
             query += "(userprincipalname={0})(samaccountname={0})(distinguishedname={0})".format(i)
         query += ")"
 
-        try:
-            resp = self._query({"filter": query, "attributes": param['attributes']})
-        except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, self._get_error_message_from_exception(e))
+        ret_val, resp = self._query(action_result, {"filter": query, "attributes": param['attributes']})
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         action_result.add_data(json.loads(resp))
         summary['total_objects'] = len(self._get_filtered_response())
@@ -492,11 +496,13 @@ class AdLdapConnector(BaseConnector):
 
         ar_data = {}
         if param["use_samaccountname"]:
-            user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
                 action_result.add_data({"message": "Failed"})
                 summary["message"] = "Failed"
-                return action_result.set_status(phantom.APP_ERROR)
+                return action_result.get_status()
 
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
@@ -536,7 +542,7 @@ class AdLdapConnector(BaseConnector):
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _query(self, param):
+    def _query(self, action_result, param):
         """
         This method handles the query and returns
         the response in the ldap connection object
@@ -552,17 +558,24 @@ class AdLdapConnector(BaseConnector):
         filter = param['filter']
         search_base = param.get('search_base', self._get_root_dn())
 
-        # throw exception if we cannot bind
-        if not self._ldap_bind():
-            raise Exception(self._ldap_connection.result)
+        try:
+            # throw exception if we cannot bind
+            if not self._ldap_bind(action_result):
+                return action_result.get_status(), {}
 
-        self._ldap_connection.search(
-            search_base=search_base,
-            search_filter=filter,
-            search_scope=ldap3.SUBTREE,
-            attributes=attrs)
+            self._ldap_connection.search(
+                search_base=search_base,
+                search_filter=filter,
+                search_scope=ldap3.SUBTREE,
+                attributes=attrs)
+        except LDAPSocketOpenError as e:
+            self.debug_print("[DEBUG] {}".format(str(e)))
+            return action_result.set_status(phantom.APP_ERROR, self._get_error_message_from_exception(e)), {}
+        except Exception as e:
+            self.debug_print("[DEBUG] Invalid server address {}".format(self._get_error_message_from_exception(e)))
+            return action_result.set_status(phantom.APP_ERROR, "Invalid server address {}".format(self._get_error_message_from_exception(e))), {}
 
-        return self._ldap_connection.response_to_json()
+        return action_result.set_status(phantom.APP_SUCCESS), self._ldap_connection.response_to_json()
 
     def _handle_run_query(self, param):
         """
@@ -577,14 +590,9 @@ class AdLdapConnector(BaseConnector):
 
         summary = action_result.update_summary({})
 
-        try:
-            resp = self._query(param)
-        except LDAPSocketOpenError as e:
-            self.debug_print(e)
-            return action_result.set_status(phantom.APP_ERROR,
-                "Invalid server address. Two common causes: invalid Server hostname or search_base")
-        except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, self._get_error_message_from_exception(e))
+        ret_val, resp = self._query(action_result, param)
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         # unify the attributes returned from AD to lowercase keys
         out_data = json.loads(resp)
@@ -606,11 +614,13 @@ class AdLdapConnector(BaseConnector):
 
         ar_data = {}
         if param["use_samaccountname"]:
-            user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["reset"] = summary["reset"] = False
                 action_result.add_data(ar_data)
-                return action_result.set_status(phantom.APP_ERROR)
+                return action_result.get_status()
 
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
@@ -674,11 +684,13 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         if param["use_samaccountname"]:
-            user_dn = self._sam_to_dn([user])   # _sam_to_dn requires a list.
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["set"] = summary["set"] = False
                 action_result.add_data(ar_data)
-                return action_result.set_status(phantom.APP_ERROR)
+                return action_result.get_status()
 
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
