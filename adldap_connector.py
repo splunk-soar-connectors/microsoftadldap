@@ -177,8 +177,6 @@ class AdLdapConnector(BaseConnector):
 
         self.debug_print("[DEBUG] _sam_to_dn return_value = {}".format(return_value))
 
-        # if action_result, add summary regarding number of records requested
-        # vs number of records found.
         return action_result.set_status(phantom.APP_SUCCESS), return_value
 
     def _get_filtered_response(self):
@@ -218,6 +216,9 @@ class AdLdapConnector(BaseConnector):
             ret_val, t_users = self._sam_to_dn(members, action_result=action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
+            
+            # add summary regarding number of records requested
+            # vs number of records found.
             action_result.update_summary({
                 "requested_user_records": len(members),
                 "found_user_records": len([k for (k, v) in list(t_users.items())
