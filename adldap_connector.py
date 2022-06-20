@@ -216,7 +216,7 @@ class AdLdapConnector(BaseConnector):
             ret_val, t_users = self._sam_to_dn(members, action_result=action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
-            
+
             # add summary regarding number of records requested
             # vs number of records found.
             action_result.update_summary({
