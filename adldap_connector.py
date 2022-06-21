@@ -552,11 +552,11 @@ class AdLdapConnector(BaseConnector):
                 search_scope=ldap3.SUBTREE,
                 attributes=attrs)
         except LDAPSocketOpenError as e:
+            self.debug_print("[DEBUG] Invalid server address. Two common causes: invalid Server hostname or search_base {}".format(str(e)))
+            return action_result.set_status(phantom.APP_ERROR, "Invalid server address. Two common causes: invalid Server hostname or search_base".format(str(e))), {}
+        except Exception as e:
             self.debug_print("[DEBUG] {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e)), {}
-        except Exception as e:
-            self.debug_print("[DEBUG] Invalid server address {}".format(str(e)))
-            return action_result.set_status(phantom.APP_ERROR, "Invalid server address {}".format(str(e))), {}
 
         return action_result.set_status(phantom.APP_SUCCESS), self._ldap_connection.response_to_json()
 
