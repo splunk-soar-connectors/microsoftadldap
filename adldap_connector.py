@@ -430,11 +430,11 @@ class AdLdapConnector(BaseConnector):
 
         # failure
         if not self._ldap_bind(action_result):
-            self.save_progress("Test connectivity failed")
+            self.save_progress("Test Connectivity Failed")
             return action_result.get_status()
 
         # success
-        self.save_progress("Test connectivity passed")
+        self.save_progress("Test Connectivity Passed")
         return action_result.set_status(action_result.get_status())
 
     def _handle_get_attributes(self, param):
