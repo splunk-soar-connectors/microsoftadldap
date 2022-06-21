@@ -27,7 +27,6 @@ import ldap3.extend.microsoft.removeMembersFromGroups
 import ldap3.extend.microsoft.unlockAccount
 import phantom.app as phantom
 from ldap3 import Tls
-from ldap3.core.exceptions import LDAPSocketOpenError
 from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
 # import json
@@ -551,9 +550,6 @@ class AdLdapConnector(BaseConnector):
                 search_filter=filter,
                 search_scope=ldap3.SUBTREE,
                 attributes=attrs)
-        except LDAPSocketOpenError as e:
-            self.debug_print("[DEBUG] Invalid server address. Two common causes: invalid Server hostname or search_base {}".format(str(e)))
-            return action_result.set_status(phantom.APP_ERROR, "Invalid server address. Two common causes: invalid Server hostname or search_base".format(str(e))), {}
         except Exception as e:
             self.debug_print("[DEBUG] {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e)), {}
