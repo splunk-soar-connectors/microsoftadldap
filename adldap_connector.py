@@ -216,7 +216,9 @@ class AdLdapConnector(BaseConnector):
             # cost for arguably greater readability.
 
             # finding groups dn by sam
-            ret_val, t_group = self._sam_to_dn(groups, action_result=action_result)   # omit action_result to avoid updating user count
+            ret_val, t_group = self._sam_to_dn(groups, action_result=action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
             for k, v in list(t_group.items()):
                 if v is False:
                     group_nf.append(k)
