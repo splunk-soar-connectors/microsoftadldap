@@ -10,46 +10,46 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2021-2022 Splunk Inc.",
-    "app_version": "2.0.9",
+    "app_version": "2.1.0",
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "5.0.0",
+    "min_phantom_version": "5.2.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
-        "ldap3 on 1/05/2021"
+        "ldap3 on 13/06/2022"
     ],
     "pip_dependencies": {
         "wheel": [
             {
                 "module": "certifi",
-                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/certifi-2022.5.18.1-py3-none-any.whl"
             },
             {
                 "module": "chardet",
-                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
             },
             {
                 "module": "ldap3",
-                "input_file": "wheels/ldap3-2.6.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/ldap3-2.6.1-py2.py3-none-any.whl"
             },
             {
                 "module": "pyasn1",
-                "input_file": "wheels/pyasn1-0.4.7-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
             },
             {
                 "module": "requests",
-                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests-2.25.0-py2.py3-none-any.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/urllib3-1.26.9-py2.py3-none-any.whl"
             }
         ]
     },
@@ -75,14 +75,12 @@
         "force_ssl": {
             "description": "Force the use of SSL protocol. Note that some actions are not possible without secure binding!",
             "data_type": "boolean",
-            "required": true,
             "default": true,
             "order": 3
         },
         "validate_ssl_cert": {
             "description": "Select if you want to validate the LDAP SSL certificate",
             "data_type": "boolean",
-            "required": true,
             "default": false,
             "order": 4
         },
@@ -116,8 +114,6 @@
                 "use_samaccountname": {
                     "description": "Specify members AND groups as sAMAccountName(s) instead of distinguishedName(s) (note: member AND groups will use sAMAccountName if selected)",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -125,16 +121,12 @@
                     "description": "Semi-colon (';') separated list of users. If 'use samaccountname' is false, then these must be distinguishedName(s)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 1
                 },
                 "groups": {
                     "description": "Semi-colon (';') separated list of groups to which the members will be added. If 'use samaccountname' is false, then these must be distinguishedName(s)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 2
                 }
             },
@@ -142,7 +134,7 @@
                 {
                     "data_path": "action_result.data.*.member",
                     "data_type": "string",
-                    "column_name": "member",
+                    "column_name": "Member",
                     "column_order": 0,
                     "example_values": [
                         "cn=svc-splunk,ou=splunk,dc=splunk,dc=lab"
@@ -151,7 +143,7 @@
                 {
                     "data_path": "action_result.data.*.function",
                     "data_type": "string",
-                    "column_name": "function",
+                    "column_name": "Function",
                     "column_order": 1,
                     "example_values": [
                         "added"
@@ -160,7 +152,7 @@
                 {
                     "data_path": "action_result.data.*.group",
                     "data_type": "string",
-                    "column_name": "group",
+                    "column_name": "Group",
                     "column_order": 2,
                     "example_values": [
                         "cn=domain guests,cn=users,dc=splunk,dc=lab"
@@ -174,14 +166,15 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "added member(s) to group(s)."
+                        "added member(s) to group(s)"
                     ]
                 },
                 {
@@ -249,8 +242,6 @@
                 "use_samaccountname": {
                     "description": "Specify members AND groups as sAMAccountName(s) instead of distinguishedName(s)",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -258,16 +249,12 @@
                     "description": "Semi-colon (';') separated list of users. If 'use samaccountname' is false, then these must be distinguishedName(s)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 1
                 },
                 "groups": {
                     "description": "Semi-colon (';') separated list of groups from which the members will be removed. If 'use samaccountname' is false, then these must be distinguishedName(s)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 2
                 }
             },
@@ -275,7 +262,7 @@
                 {
                     "data_path": "action_result.data.*.member",
                     "data_type": "string",
-                    "column_name": "member",
+                    "column_name": "Member",
                     "column_order": 0,
                     "example_values": [
                         "cn=svc-splunk,ou=splunk,dc=splunk,dc=lab"
@@ -284,7 +271,7 @@
                 {
                     "data_path": "action_result.data.*.function",
                     "data_type": "string",
-                    "column_name": "function",
+                    "column_name": "Function",
                     "column_order": 1,
                     "example_values": [
                         "removed"
@@ -293,7 +280,7 @@
                 {
                     "data_path": "action_result.data.*.group",
                     "data_type": "string",
-                    "column_name": "group",
+                    "column_name": "Group",
                     "column_order": 2,
                     "example_values": [
                         "cn=domain guests,cn=users,dc=splunk,dc=lab"
@@ -307,14 +294,15 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "removed member(s) to group(s)."
+                        "removed member(s) from group(s)"
                     ]
                 },
                 {
@@ -382,8 +370,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName for user instead of distinguishedName(s)",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -403,7 +389,7 @@
                 {
                     "data_path": "action_result.data.*.user_dn",
                     "data_type": "string",
-                    "column_name": "user dn",
+                    "column_name": "User Dn",
                     "column_order": 0,
                     "example_values": [
                         "cn=defaultaccount,cn=users,dc=splunk,dc=lab"
@@ -412,7 +398,7 @@
                 {
                     "data_path": "action_result.data.*.samaccountname",
                     "data_type": "string",
-                    "column_name": "samaccountname",
+                    "column_name": "SAM Account Name",
                     "column_order": 1
                 },
                 {
@@ -435,7 +421,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -497,8 +484,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -521,7 +506,7 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name": "target user",
+                    "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
                         "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
@@ -530,7 +515,7 @@
                 {
                     "data_path": "action_result.data.*.starting_status",
                     "data_type": "string",
-                    "column_name": "started status",
+                    "column_name": "Started Status",
                     "column_order": 1,
                     "example_values": [
                         "enabled"
@@ -539,7 +524,7 @@
                 {
                     "data_path": "action_result.summary.account_status",
                     "data_type": "string",
-                    "column_name": "current status",
+                    "column_name": "Current Status",
                     "column_order": 2,
                     "example_values": [
                         "disabled"
@@ -549,7 +534,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -604,8 +590,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -628,7 +612,7 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name": "target user",
+                    "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
                         "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
@@ -637,7 +621,7 @@
                 {
                     "data_path": "action_result.data.*.starting_status",
                     "data_type": "string",
-                    "column_name": "started status",
+                    "column_name": "Started Status",
                     "column_order": 1,
                     "example_values": [
                         "disabled"
@@ -646,7 +630,7 @@
                 {
                     "data_path": "action_result.summary.account_status",
                     "data_type": "string",
-                    "column_name": "current status",
+                    "column_name": "Current Status",
                     "column_order": 2,
                     "example_values": [
                         "enabled"
@@ -656,7 +640,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -710,8 +695,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -719,12 +702,11 @@
                     "description": "User whose attributes are to be modified",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "contains": [
                         "user name"
                     ],
-                    "default": "",
-                    "order": 1
+                    "order": 1,
+                    "primary": true
                 }
             },
             "output": [
@@ -755,7 +737,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -778,7 +761,7 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name": "target user",
+                    "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
                         "SVC-SPLUNK"
@@ -821,8 +804,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -841,7 +822,6 @@
                     "description": "New password",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": false,
                     "order": 2
                 },
@@ -849,7 +829,6 @@
                     "description": "Re-type the password",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": false,
                     "order": 3
                 }
@@ -861,7 +840,7 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name": "target user",
+                    "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
                         "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
@@ -905,7 +884,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -964,7 +944,6 @@
                     "description": "Specify the distinguishedName to move",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -972,7 +951,6 @@
                     "description": "The distinguishedName of the OU the specified object will move to",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": false,
                     "order": 1
                 }
@@ -981,7 +959,7 @@
                 {
                     "data_path": "action_result.parameter.object",
                     "data_type": "string",
-                    "column_name": "object",
+                    "column_name": "Object",
                     "column_order": 0,
                     "example_values": [
                         "CN=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB"
@@ -990,7 +968,7 @@
                 {
                     "data_path": "action_result.parameter.destination_ou",
                     "data_type": "string",
-                    "column_name": "destination",
+                    "column_name": "Destination",
                     "column_order": 1,
                     "example_values": [
                         "OU=SPLUNK,DC=SPLUNK,DC=LAB"
@@ -1021,7 +999,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1062,23 +1041,17 @@
                     "description": "The LDAP filter (must be in LDAP Syntax)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 0
                 },
                 "search_base": {
                     "description": "The search base to use in its distinguishedName format. If not specified, the 'defaultNamingContext' will be used",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
-                    "default": "",
                     "order": 1
                 },
                 "attributes": {
                     "description": "Semi-colon separated list of attributes to collect (e.g. sAMAccountName;mail)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": "sAMAccountName",
                     "order": 2
                 }
@@ -1113,7 +1086,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1180,15 +1154,12 @@
                     "description": "The semi-colon separated principals. These can be sAMAccountName, userprincipalname, or distinguishedName",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
-                    "default": "",
                     "order": 0
                 },
                 "attributes": {
                     "description": "Semi-colon separated list of attributes to collect",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": "sAMAccountName",
                     "order": 1
                 }
@@ -1212,7 +1183,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1285,8 +1257,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "default": false,
                     "order": 0
                 },
@@ -1294,25 +1264,22 @@
                     "description": "User whose attributes are to be modified",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "contains": [
                         "user name"
                     ],
-                    "default": "",
-                    "order": 1
+                    "order": 1,
+                    "primary": true
                 },
                 "attribute": {
                     "description": "The attribute to modify (add/delete/replace)",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "default": "mail",
                     "order": 2
                 },
                 "value": {
                     "description": "Attribute value",
                     "data_type": "string",
-                    "primary": false,
                     "default": "user@foo.bar",
                     "order": 3
                 },
@@ -1320,7 +1287,6 @@
                     "description": "Semi-colon separated list of attributes to collect",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "value_list": [
                         "ADD",
                         "DELETE",
@@ -1341,9 +1307,10 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ],
-                    "column_name": "status",
+                    "column_name": "Status",
                     "column_order": 4
                 },
                 {
@@ -1366,7 +1333,7 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name": "user",
+                    "column_name": "User",
                     "column_order": 0,
                     "example_values": [
                         "Cn=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB",
@@ -1376,7 +1343,7 @@
                 {
                     "data_path": "action_result.parameter.value",
                     "data_type": "string",
-                    "column_name": "new value",
+                    "column_name": "New Value",
                     "column_order": 2,
                     "example_values": [
                         "svc_splunk@splunk.com"
@@ -1388,13 +1355,13 @@
                     "example_values": [
                         "REPLACE"
                     ],
-                    "column_name": "action",
+                    "column_name": "Action",
                     "column_order": 3
                 },
                 {
                     "data_path": "action_result.parameter.attribute",
                     "data_type": "string",
-                    "column_name": "attribute",
+                    "column_name": "Attribute",
                     "column_order": 1,
                     "example_values": [
                         "mail"
