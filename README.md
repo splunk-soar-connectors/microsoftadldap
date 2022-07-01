@@ -2,18 +2,26 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2\.0\.7
+Connector Version: 2\.1\.0  
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.9\.39220  
+Minimum Product Version: 5\.2\.0  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
-[comment]: # " File: readme.md"
-[comment]: # "  Copyright (c) 2021 Splunk Inc."
+[comment]: # " File: README.md"
+[comment]: # "     Copyright (c) 2021-2022 Splunk Inc."
+[comment]: # "     Licensed under the Apache License, Version 2.0 (the 'License');"
+[comment]: # "     you may not use this file except in compliance with the License."
+[comment]: # "     You may obtain a copy of the License at"
 [comment]: # ""
-[comment]: # "  Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
+[comment]: # "       http://www.apache.org/licenses/LICENSE-2.0"
+[comment]: # ""
+[comment]: # "     Unless required by applicable law or agreed to in writing, software distributed under"
+[comment]: # "     the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,"
+[comment]: # "     either express or implied. See the License for the specific language governing permissions"
+[comment]: # "     and limitations under the License."
 [comment]: # ""
 ## App Information
 
@@ -41,6 +49,21 @@ delegate the appropriate least-privilege access to a service account with a very
 Lastly, it is strongly recommended to use SSL and disallow insecure (plain text and unsigned binds)
 if at all possible.
 
+## To add a custom certificate to the certificate store, follow the below steps:
+
+-   Need to install the certificate on the server
+
+      
+
+    -   Upload the SSL certificate on the server
+    -   Go to /opt/phantom/bin and execute the import_cert.py script using command:  
+        **phenv python3 import_cert.py -i "path_of_certificate_on_server"**
+
+-   Go to etc/hosts using the root user. Assign the domain to IP to use the SSL certificate
+
+**Note:** For reference: [Splunk
+Docs](https://docs.splunk.com/Documentation/SOARonprem/latest/Admin/AddOrRemoveCertificates)
+
 ## Run Query Action
 
 This action provides the user the ability to run generic queries with the LDAP syntax. The action
@@ -49,11 +72,11 @@ that you would like to return.
 
 -   Common AD LDAP Run Query Examples
 
-
+      
 
     -   Get Users belonging to a specific OU, Container, or Group
 
-
+          
 
         -   filter = (samaccountname=\*)
         -   attributes = samaccountname;mail
@@ -61,14 +84,14 @@ that you would like to return.
 
     -   List Group Names that a User belongs to
 
-
+          
 
         -   filter = (&(member=distinguishedNameOfUserHERE)(objectClass=group))
         -   attributes = name
 
     -   Return results if mail attribute is present OR sAMAccountName matches '\*admin\*'
 
-
+          
 
         -   filter = (\|(mail=\*)(samaccountname=\*admin\*))
         -   attributes = samaccountname;mail;userprincipalname;distinguishedname
@@ -76,7 +99,7 @@ that you would like to return.
     -   If you would like to learn more about LDAP Filter Syntax, check out this [Microsoft
         Wiki](https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx)
 
-
+  
 
 
 ### Configuration Variables
@@ -87,8 +110,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **server** |  required  | string | The Active Directory Server hostname, IP, or VIP for binding
 **username** |  required  | string | The username with which to bind to LDAP
 **password** |  required  | password | The password for the binding user
-**force\_ssl** |  required  | boolean | Force the use of SSL protocol\. Note that some actions are not possible without secure binding\!
-**validate\_ssl\_cert** |  required  | boolean | Select if you want to validate the LDAP SSL certificate
+**force\_ssl** |  optional  | boolean | Force the use of SSL protocol\. Note that some actions are not possible without secure binding\!
+**validate\_ssl\_cert** |  optional  | boolean | Select if you want to validate the LDAP SSL certificate
 **ssl\_port** |  required  | numeric | The port to bind for SSL \(default 636\)
 
 ### Supported Actions  
@@ -126,26 +149,26 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Specify members AND groups as sAMAccountName\(s\) instead of distinguishedName\(s\) \(note\: member AND groups will use sAMAccountName if selected\) | boolean |
-**members** |  required  | Semi\-colon \(';'\) separated list of users\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string |
-**groups** |  required  | Semi\-colon \(';'\) separated list of groups to which the members will be added\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string |
+**use\_samaccountname** |  optional  | Specify members AND groups as sAMAccountName\(s\) instead of distinguishedName\(s\) \(note\: member AND groups will use sAMAccountName if selected\) | boolean | 
+**members** |  required  | Semi\-colon \(';'\) separated list of users\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string | 
+**groups** |  required  | Semi\-colon \(';'\) separated list of groups to which the members will be added\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.member | string |
-action\_result\.data\.\*\.function | string |
-action\_result\.data\.\*\.group | string |
-action\_result\.summary | string |
-action\_result\.status | string |
-action\_result\.message | string |
-action\_result\.parameter\.use\_samaccountname | string |
-action\_result\.parameter\.members | string |
-action\_result\.parameter\.groups | string |
-action\_result\.summary\.found\_user\_records | numeric |
-action\_result\.summary\.requested\_user\_records | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.data\.\*\.member | string | 
+action\_result\.data\.\*\.function | string | 
+action\_result\.data\.\*\.group | string | 
+action\_result\.summary | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.parameter\.use\_samaccountname | string | 
+action\_result\.parameter\.members | string | 
+action\_result\.parameter\.groups | string | 
+action\_result\.summary\.found\_user\_records | numeric | 
+action\_result\.summary\.requested\_user\_records | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'remove group members'
 Removes one or more Active Directory objects from one or more groups
@@ -156,26 +179,26 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Specify members AND groups as sAMAccountName\(s\) instead of distinguishedName\(s\) | boolean |
-**members** |  required  | Semi\-colon \(';'\) separated list of users\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string |
-**groups** |  required  | Semi\-colon \(';'\) separated list of groups from which the members will be removed\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string |
+**use\_samaccountname** |  optional  | Specify members AND groups as sAMAccountName\(s\) instead of distinguishedName\(s\) | boolean | 
+**members** |  required  | Semi\-colon \(';'\) separated list of users\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string | 
+**groups** |  required  | Semi\-colon \(';'\) separated list of groups from which the members will be removed\. If 'use samaccountname' is false, then these must be distinguishedName\(s\) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.member | string |
-action\_result\.data\.\*\.function | string |
-action\_result\.data\.\*\.group | string |
-action\_result\.summary | string |
-action\_result\.status | string |
-action\_result\.message | string |
-action\_result\.parameter\.use\_samaccountname | string |
-action\_result\.parameter\.members | string |
-action\_result\.parameter\.groups | string |
-action\_result\.summary\.found\_user\_records | numeric |
-action\_result\.summary\.requested\_user\_records | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.data\.\*\.member | string | 
+action\_result\.data\.\*\.function | string | 
+action\_result\.data\.\*\.group | string | 
+action\_result\.summary | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.parameter\.use\_samaccountname | string | 
+action\_result\.parameter\.members | string | 
+action\_result\.parameter\.groups | string | 
+action\_result\.summary\.found\_user\_records | numeric | 
+action\_result\.summary\.requested\_user\_records | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'unlock account'
 Unlocks a locked Active Directory account
@@ -186,23 +209,23 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Use sAMAccountName for user instead of distinguishedName\(s\) | boolean |
-**user** |  required  | Specify the user to unlock\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name`
+**use\_samaccountname** |  optional  | Use sAMAccountName for user instead of distinguishedName\(s\) | boolean | 
+**user** |  required  | Specify the user to unlock\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name` 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.user\_dn | string |
-action\_result\.data\.\*\.samaccountname | string |
-action\_result\.data\.\*\.unlocked | boolean |
-action\_result\.message | string |
-action\_result\.status | string |
-action\_result\.parameter\.use\_samaccountname | boolean |
-action\_result\.summary | string |
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.summary\.unlocked | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.data\.\*\.samaccountname | string | 
+action\_result\.data\.\*\.unlocked | boolean | 
+action\_result\.message | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
+action\_result\.summary | string | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.summary\.unlocked | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'disable account'
 Disables an Active Directory account
@@ -213,21 +236,21 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean |
-**user** |  required  | Specify the user to disable\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name`
+**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean | 
+**user** |  required  | Specify the user to disable\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name` 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.data\.\*\.starting\_status | string |
-action\_result\.summary\.account\_status | string |
-action\_result\.status | string |
-action\_result\.parameter\.use\_samaccountname | boolean |
-action\_result\.message | string |
-action\_result\.data\.\*\.user\_dn | string |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.starting\_status | string | 
+action\_result\.summary\.account\_status | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
+action\_result\.message | string | 
+action\_result\.data\.\*\.user\_dn | string | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'enable account'
 Enables a disabled Active Directory account
@@ -238,21 +261,21 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean |
-**user** |  required  | Specify the user to enable\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name`
+**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean | 
+**user** |  required  | Specify the user to enable\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name` 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.data\.\*\.starting\_status | string |
-action\_result\.summary\.account\_status | string |
-action\_result\.status | string |
-action\_result\.parameter\.use\_samaccountname | boolean |
-action\_result\.message | string |
-action\_result\.data\.\*\.user\_dn | string |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.starting\_status | string | 
+action\_result\.summary\.account\_status | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
+action\_result\.message | string | 
+action\_result\.data\.\*\.user\_dn | string | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'reset password'
 Resets the password of a user, requiring the user to change password at next login
@@ -263,22 +286,22 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean |
-**user** |  required  | User whose attributes are to be modified | string |  `user name`
+**use\_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean | 
+**user** |  required  | User whose attributes are to be modified | string |  `user name` 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.reset | numeric |
-action\_result\.data\.\*\.user\_dn | string |
-action\_result\.data\.\*\.samaccountname | string |
-action\_result\.status | string |
-action\_result\.message | string |
-action\_result\.summary\.reset | numeric |
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.parameter\.use\_samaccountname | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.data\.\*\.reset | numeric | 
+action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.data\.\*\.samaccountname | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.summary\.reset | numeric | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.parameter\.use\_samaccountname | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'set password'
 Set a user's password
@@ -289,27 +312,27 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean |
-**user** |  required  | Specify the user whose password will be set\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name`
-**password** |  required  | New password | string |
-**confirm\_password** |  required  | Re\-type the password | string |
+**use\_samaccountname** |  optional  | Specify sAMAccountName instead of distinguishedName | boolean | 
+**user** |  required  | Specify the user whose password will be set\. If 'use samaccountname' is false, then this must be the user's distinguishedName | string |  `user name` 
+**password** |  required  | New password | string | 
+**confirm\_password** |  required  | Re\-type the password | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.data\.\*\.set | boolean |
-action\_result\.data\.\*\.user\_dn | string |
-action\_result\.data\.\*\.samaccountname | string |
-action\_result\.parameter\.password | string |
-action\_result\.parameter\.confirm\_password | string |
-action\_result\.status | string |
-action\_result\.parameter\.use\_samaccountname | boolean |
-action\_result\.summary | string |
-action\_result\.message | string |
-action\_result\.summary\.set | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.set | boolean | 
+action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.data\.\*\.samaccountname | string | 
+action\_result\.parameter\.password | string | 
+action\_result\.parameter\.confirm\_password | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
+action\_result\.summary | string | 
+action\_result\.message | string | 
+action\_result\.summary\.set | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'move object'
 Moves an entry in Active Directory
@@ -320,21 +343,21 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**object** |  required  | Specify the distinguishedName to move | string |
-**destination\_ou** |  required  | The distinguishedName of the OU the specified object will move to | string |
+**object** |  required  | Specify the distinguishedName to move | string | 
+**destination\_ou** |  required  | The distinguishedName of the OU the specified object will move to | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.object | string |
-action\_result\.parameter\.destination\_ou | string |
-action\_result\.summary\.moved | string |
-action\_result\.data\.\*\.source\_object | string |
-action\_result\.data\.\*\.destination\_container | string |
-action\_result\.status | string |
-action\_result\.message | string |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.parameter\.object | string | 
+action\_result\.parameter\.destination\_ou | string | 
+action\_result\.summary\.moved | string | 
+action\_result\.data\.\*\.source\_object | string | 
+action\_result\.data\.\*\.destination\_container | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'run query'
 Query Active Directory LDAP
@@ -347,24 +370,24 @@ This action flexibly supports querying Active Directory using LDAP syntax\.
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**filter** |  required  | The LDAP filter \(must be in LDAP Syntax\) | string |
-**search\_base** |  optional  | The search base to use in its distinguishedName format\. If not specified, the 'defaultNamingContext' will be used | string |
-**attributes** |  required  | Semi\-colon separated list of attributes to collect \(e\.g\. sAMAccountName;mail\) | string |
+**filter** |  required  | The LDAP filter \(must be in LDAP Syntax\) | string | 
+**search\_base** |  optional  | The search base to use in its distinguishedName format\. If not specified, the 'defaultNamingContext' will be used | string | 
+**attributes** |  required  | Semi\-colon separated list of attributes to collect \(e\.g\. sAMAccountName;mail\) | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.entries\.\*\.attributes | string |
-action\_result\.parameter\.filter | string |
-action\_result\.parameter\.search\_base | string |
-action\_result\.parameter\.attributes | string |
-action\_result\.status | string |
-action\_result\.message | string |
-action\_result\.summary\.total\_objects | numeric |
-action\_result\.data\.\*\.entries\.\*\.dn | string |
-action\_result\.data\.\*\.entries\.\*\.attributes\.samaccountname | string |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.data\.\*\.entries\.\*\.attributes | string | 
+action\_result\.parameter\.filter | string | 
+action\_result\.parameter\.search\_base | string | 
+action\_result\.parameter\.attributes | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.summary\.total\_objects | numeric | 
+action\_result\.data\.\*\.entries\.\*\.dn | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes\.samaccountname | string | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'get attributes'
 Get attributes of various principals
@@ -377,23 +400,23 @@ This action takes any number of principals \(sAMAccountName, distinguishedName, 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**principals** |  required  | The semi\-colon separated principals\. These can be sAMAccountName, userprincipalname, or distinguishedName | string |
-**attributes** |  required  | Semi\-colon separated list of attributes to collect | string |
+**principals** |  required  | The semi\-colon separated principals\. These can be sAMAccountName, userprincipalname, or distinguishedName | string | 
+**attributes** |  required  | Semi\-colon separated list of attributes to collect | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.principals | string |
-action\_result\.parameter\.attributes | string |
-action\_result\.status | string |
-action\_result\.message | string |
-summary\.total\_objects | numeric |
-action\_result\.summary | string |
-action\_result\.data\.\*\.entries\.\*\.attributes | string |
-action\_result\.data\.\*\.entries\.\*\.dn | string |
-action\_result\.data\.\*\.entries\.\*\.attributes\.objectGUID | string |
-action\_result\.summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |  
+action\_result\.parameter\.principals | string | 
+action\_result\.parameter\.attributes | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+summary\.total\_objects | numeric | 
+action\_result\.summary | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes | string | 
+action\_result\.data\.\*\.entries\.\*\.dn | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes\.objectGUID | string | 
+action\_result\.summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric |   
 
 ## action: 'set attribute'
 Add, delete, or replace an attribute of a user
@@ -404,23 +427,23 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**use\_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean |
-**user** |  required  | User whose attributes are to be modified | string |  `user name`
-**attribute** |  required  | The attribute to modify \(add/delete/replace\) | string |
-**value** |  optional  | Attribute value | string |
-**action** |  required  | Semi\-colon separated list of attributes to collect | string |
+**use\_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean | 
+**user** |  required  | User whose attributes are to be modified | string |  `user name` 
+**attribute** |  required  | The attribute to modify \(add/delete/replace\) | string | 
+**value** |  optional  | Attribute value | string | 
+**action** |  required  | Semi\-colon separated list of attributes to collect | string | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.message | string |
-action\_result\.status | string |
-action\_result\.message | string |
-action\_result\.summary\.summary | string |
-action\_result\.parameter\.user | string |  `user name`
-action\_result\.parameter\.value | string |
-action\_result\.parameter\.action | string |
-action\_result\.parameter\.attribute | string |
-action\_result\.parameter\.use\_samaccountname | numeric |
-summary\.total\_objects | numeric |
-summary\.total\_objects\_successful | numeric |
+action\_result\.data\.\*\.message | string | 
+action\_result\.status | string | 
+action\_result\.message | string | 
+action\_result\.summary\.summary | string | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.parameter\.value | string | 
+action\_result\.parameter\.action | string | 
+action\_result\.parameter\.attribute | string | 
+action\_result\.parameter\.use\_samaccountname | numeric | 
+summary\.total\_objects | numeric | 
+summary\.total\_objects\_successful | numeric | 
