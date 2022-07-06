@@ -2,18 +2,26 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2\.0\.7
+Connector Version: 2\.1\.0  
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.9\.39220  
+Minimum Product Version: 5\.2\.0  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
-[comment]: # " File: readme.md"
-[comment]: # "  Copyright (c) 2021 Splunk Inc."
+[comment]: # " File: README.md"
+[comment]: # "     Copyright (c) 2021-2022 Splunk Inc."
+[comment]: # "     Licensed under the Apache License, Version 2.0 (the 'License');"
+[comment]: # "     you may not use this file except in compliance with the License."
+[comment]: # "     You may obtain a copy of the License at"
 [comment]: # ""
-[comment]: # "  Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
+[comment]: # "       http://www.apache.org/licenses/LICENSE-2.0"
+[comment]: # ""
+[comment]: # "     Unless required by applicable law or agreed to in writing, software distributed under"
+[comment]: # "     the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,"
+[comment]: # "     either express or implied. See the License for the specific language governing permissions"
+[comment]: # "     and limitations under the License."
 [comment]: # ""
 ## App Information
 
@@ -40,6 +48,21 @@ these actions. It is best practice to NOT use a "Domain Administrator" (or highe
 delegate the appropriate least-privilege access to a service account with a very strong password.
 Lastly, it is strongly recommended to use SSL and disallow insecure (plain text and unsigned binds)
 if at all possible.
+
+## To add a custom certificate to the certificate store, follow the below steps:
+
+-   Need to install the certificate on the server
+
+      
+
+    -   Upload the SSL certificate on the server
+    -   Go to /opt/phantom/bin and execute the import_cert.py script using command:  
+        **phenv python3 import_cert.py -i "path_of_certificate_on_server"**
+
+-   Go to etc/hosts using the root user. Assign the domain to IP to use the SSL certificate
+
+**Note:** For reference: [Splunk
+Docs](https://docs.splunk.com/Documentation/SOARonprem/latest/Admin/AddOrRemoveCertificates)
 
 ## Run Query Action
 
@@ -87,8 +110,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **server** |  required  | string | The Active Directory Server hostname, IP, or VIP for binding
 **username** |  required  | string | The username with which to bind to LDAP
 **password** |  required  | password | The password for the binding user
-**force\_ssl** |  required  | boolean | Force the use of SSL protocol\. Note that some actions are not possible without secure binding\!
-**validate\_ssl\_cert** |  required  | boolean | Select if you want to validate the LDAP SSL certificate
+**force\_ssl** |  optional  | boolean | Force the use of SSL protocol\. Note that some actions are not possible without secure binding\!
+**validate\_ssl\_cert** |  optional  | boolean | Select if you want to validate the LDAP SSL certificate
 **ssl\_port** |  required  | numeric | The port to bind for SSL \(default 636\)
 
 ### Supported Actions  
