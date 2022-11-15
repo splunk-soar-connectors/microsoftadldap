@@ -272,7 +272,6 @@ class AdLdapConnector(BaseConnector):
                     "group": j,
                     "function": func
                 })
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         return action_result.set_status(phantom.APP_SUCCESS,
             "{} member(s) {} group(s)".format(func, "to" if func == "added" else "from"))
 
@@ -296,7 +295,6 @@ class AdLdapConnector(BaseConnector):
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["unlocked"] = summary["unlocked"] = False
                 action_result.add_data(ar_data)
-                action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
                 return action_result.set_status(phantom.APP_ERROR, "No users found")
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
@@ -307,7 +305,6 @@ class AdLdapConnector(BaseConnector):
         if not self._ldap_bind(action_result):
             ar_data["unlocked"] = summary["unlocked"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.get_status()
 
         try:
@@ -319,14 +316,12 @@ class AdLdapConnector(BaseConnector):
         except Exception as e:
             ar_data["unlocked"] = summary["unlocked"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(
                 phantom.APP_ERROR,
                 str(e)
             )
 
         action_result.add_data(ar_data)
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         summary["unlocked"] = True
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -395,7 +390,6 @@ class AdLdapConnector(BaseConnector):
 
         summary['account_status'] = actstr
         action_result.add_data(ar_data)
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_move_object(self, param):
@@ -415,7 +409,6 @@ class AdLdapConnector(BaseConnector):
         if not self._ldap_bind(action_result):
             ar_data["moved"] = summary["moved"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.get_status()
 
         try:
@@ -424,17 +417,14 @@ class AdLdapConnector(BaseConnector):
             if not res:
                 ar_data["moved"] = summary["moved"] = False
                 action_result.add_data(ar_data)
-                action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
                 return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result)
             ar_data["source_object"] = obj
             ar_data["destination_container"] = destination_ou
         except Exception as e:
             ar_data["moved"] = summary["moved"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR, str(e))
         action_result.add_data(ar_data)
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         summary["moved"] = True
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -472,7 +462,6 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         action_result.add_data(json.loads(resp))
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         summary['total_objects'] = len(self._get_filtered_response())
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -599,7 +588,6 @@ class AdLdapConnector(BaseConnector):
         # set data path stuff and exit
         action_result.add_data(out_data)
         summary['total_objects'] = len(self._get_filtered_response())
-        action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_reset_password(self, param):
@@ -615,7 +603,6 @@ class AdLdapConnector(BaseConnector):
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["reset"] = summary["reset"] = False
                 action_result.add_data(ar_data)
-                action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
                 return action_result.set_status(phantom.APP_ERROR, "No users found")
 
             ar_data["user_dn"] = user_dn[user]
@@ -630,7 +617,6 @@ class AdLdapConnector(BaseConnector):
         if not self._ldap_bind(action_result):
             ar_data["reset"] = summary["reset"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.get_status()
 
         try:
@@ -643,7 +629,6 @@ class AdLdapConnector(BaseConnector):
         except Exception as e:
             ar_data["reset"] = summary["reset"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
@@ -651,12 +636,10 @@ class AdLdapConnector(BaseConnector):
         if ret:
             ar_data["reset"] = summary["reset"] = True
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_SUCCESS)
         else:
             ar_data["reset"] = summary["reset"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR)
 
     def _handle_set_password(self, param):
@@ -675,14 +658,12 @@ class AdLdapConnector(BaseConnector):
         if pwd != confirm_pwd:
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR, "Passwords do not match")
 
         if not self._ldap_bind(action_result):
             self.debug_print("[DEBUG] handle_set_password - no bind")
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.get_status()
 
         if param["use_samaccountname"]:
@@ -692,7 +673,6 @@ class AdLdapConnector(BaseConnector):
             if len(user_dn) == 0 or user_dn[user] is False:
                 ar_data["set"] = summary["set"] = False
                 action_result.add_data(ar_data)
-                action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
                 return action_result.set_status(phantom.APP_ERROR, "No users found")
 
             ar_data["user_dn"] = user_dn[user]
@@ -708,19 +688,16 @@ class AdLdapConnector(BaseConnector):
             self.debug_print("[DEBUG] handle_set_password, e = {}".format(str(e)))
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR, """{}: Make sure account in asset has permissions to Set
                     Password and password meets complexity requirements""".format(e.description))
         self.debug_print("[DEBUG] handle_set_password, ret = {}".format(ret))
         if ret:
             ar_data["set"] = summary["set"] = True
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_SUCCESS)
         else:
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             return action_result.set_status(phantom.APP_ERROR)
 
     def _handle_add_group_members(self, param):
@@ -795,6 +772,11 @@ class AdLdapConnector(BaseConnector):
         elif action_id == "set_password":
             ret_val = self._handle_set_password(param)
 
+        action_results = self.get_action_results()
+        if len(action_results) > 0:
+            action_result = action_results[0]
+            action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
+            action_result.set_status(ret_val, self.replace_null_values(action_result.get_message()))
         return ret_val
 
     def initialize(self):
