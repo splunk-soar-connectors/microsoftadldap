@@ -46,6 +46,12 @@ class AdLdapConnector(BaseConnector):
     def __init__(self):
         super(AdLdapConnector, self).__init__()
 
+    def replace_null_values(self, data):
+        return json.loads(json.dumps(data).replace('\\u0000', '\\\\u0000'))
+
+    def _dump_error_log(self, error, message="Exception occurred."):
+        self.error_print(message, dump_object=error)
+
     def _ldap_bind(self, action_result=None):
         """
         returns phantom.APP_SUCCESS if connection succeeded,
@@ -172,12 +178,6 @@ class AdLdapConnector(BaseConnector):
         except Exception as e:
             self.debug_print("[DEBUG] get_filtered_response(), exception: {}".format(str(e)))
             return []
-
-    def replace_null_values(self, data):
-        return json.loads(json.dumps(data).replace('\\u0000', '\\\\u0000'))
-
-    def _dump_error_log(self, error, message="Exception occurred."):
-        self.error_print(message, dump_object=error)
 
     def _handle_group_members(self, param, add):
         """
@@ -597,8 +597,6 @@ class AdLdapConnector(BaseConnector):
 
         # set data path stuff and exit
         action_result.add_data(out_data)
-        self.debug_print("RUN QUERY DATA")
-        self.debug_print(out_data)
         summary['total_objects'] = len(self._get_filtered_response())
         return action_result.set_status(phantom.APP_SUCCESS)
 
