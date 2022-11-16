@@ -155,9 +155,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
-                        true
+                        true,
+                        false
                     ]
                 },
                 {
@@ -283,9 +284,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
-                        true
+                        true,
+                        false
                     ]
                 },
                 {
@@ -398,6 +400,7 @@
                     "data_path": "action_result.parameter.use_samaccountname",
                     "data_type": "boolean",
                     "example_values": [
+                        true,
                         false
                     ]
                 },
@@ -512,6 +515,7 @@
                     "data_path": "action_result.parameter.use_samaccountname",
                     "data_type": "boolean",
                     "example_values": [
+                        true,
                         false
                     ]
                 },
@@ -618,6 +622,7 @@
                     "data_path": "action_result.parameter.use_samaccountname",
                     "data_type": "boolean",
                     "example_values": [
+                        true,
                         false
                     ]
                 },
@@ -720,9 +725,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
-                        true
+                        true,
+                        false
                     ]
                 },
                 {
@@ -860,6 +866,7 @@
                     "data_path": "action_result.parameter.use_samaccountname",
                     "data_type": "boolean",
                     "example_values": [
+                        true,
                         false
                     ]
                 },
@@ -1326,9 +1333,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
-                        true
+                        true,
+                        false
                     ]
                 },
                 {
