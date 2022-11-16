@@ -100,6 +100,7 @@ class AdLdapConnector(BaseConnector):
 
         except Exception as e:
             self.debug_print("[DEBUG] ldap_bind, e = {}".format(str(e)))
+            self._dump_error_log(e)
             if action_result:
                 return action_result.set_status(
                     phantom.APP_ERROR, str(e))
@@ -174,6 +175,9 @@ class AdLdapConnector(BaseConnector):
 
     def replace_null_values(self, data):
         return json.loads(json.dumps(data).replace('\\u0000', '\\\\u0000'))
+
+    def _dump_error_log(self, error, message="Exception occurred."):
+        self.error_print(message, dump_object=error)
 
     def _handle_group_members(self, param, add):
         """
@@ -257,6 +261,7 @@ class AdLdapConnector(BaseConnector):
                     raise_error=True
                 )
         except Exception as e:
+            self._dump_error_log(e)
             if type(e).__name__ == "LDAPInvalidDnError":
                 error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and " \
                             "group(s) values must be in distinguishedName format"
@@ -314,6 +319,7 @@ class AdLdapConnector(BaseConnector):
             )
             ar_data["unlocked"] = True
         except Exception as e:
+            self._dump_error_log(e)
             ar_data["unlocked"] = summary["unlocked"] = False
             action_result.add_data(ar_data)
             return action_result.set_status(
@@ -385,6 +391,7 @@ class AdLdapConnector(BaseConnector):
             if not res:
                 return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result)
         except Exception as e:
+            self._dump_error_log(e)
             self.debug_print("[DEBUG] disable_account error = {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
@@ -421,6 +428,7 @@ class AdLdapConnector(BaseConnector):
             ar_data["source_object"] = obj
             ar_data["destination_container"] = destination_ou
         except Exception as e:
+            self._dump_error_log(e)
             ar_data["moved"] = summary["moved"] = False
             action_result.add_data(ar_data)
             return action_result.set_status(phantom.APP_ERROR, str(e))
@@ -518,6 +526,7 @@ class AdLdapConnector(BaseConnector):
             )
             self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
         except Exception as e:
+            self._dump_error_log(e)
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
             return action_result.set_status(phantom.APP_ERROR, str(e))
@@ -555,6 +564,7 @@ class AdLdapConnector(BaseConnector):
                 search_scope=ldap3.SUBTREE,
                 attributes=attrs)
         except Exception as e:
+            self._dump_error_log(e)
             self.debug_print("[DEBUG] {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e)), {}
 
@@ -587,6 +597,8 @@ class AdLdapConnector(BaseConnector):
 
         # set data path stuff and exit
         action_result.add_data(out_data)
+        self.debug_print("RUN QUERY DATA")
+        self.debug_print(out_data)
         summary['total_objects'] = len(self._get_filtered_response())
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -627,6 +639,7 @@ class AdLdapConnector(BaseConnector):
             )
             self.debug_print("[DEBUG] handle_reset_attribute, ret = {}".format(ret))
         except Exception as e:
+            self._dump_error_log(e)
             ar_data["reset"] = summary["reset"] = False
             action_result.add_data(ar_data)
             return action_result.set_status(phantom.APP_ERROR, str(e))
@@ -685,6 +698,7 @@ class AdLdapConnector(BaseConnector):
             self.debug_print("[DEBUG] about to attempt password set...")
             ret = self._ldap_connection.extend.microsoft.modify_password(user, pwd)
         except Exception as e:
+            self._dump_error_log(e)
             self.debug_print("[DEBUG] handle_set_password, e = {}".format(str(e)))
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
