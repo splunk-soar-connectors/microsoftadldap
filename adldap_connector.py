@@ -786,7 +786,7 @@ class AdLdapConnector(BaseConnector):
 
         action_results = self.get_action_results()
         if len(action_results) > 0:
-            action_result = action_results[0]
+            action_result = action_results[-1]
             action_result._ActionResult__data = self.replace_null_values(action_result._ActionResult__data)
             action_result.set_status(ret_val, self.replace_null_values(action_result.get_message()))
         return ret_val
