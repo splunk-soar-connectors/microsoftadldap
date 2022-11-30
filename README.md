@@ -2,11 +2,11 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2\.1\.0  
+Connector Version: 2\.2\.0  
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 5\.2\.0  
+Minimum Product Version: 5\.3\.5  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
@@ -156,17 +156,17 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.member | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.groups | string | 
+action\_result\.parameter\.members | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
 action\_result\.data\.\*\.function | string | 
 action\_result\.data\.\*\.group | string | 
+action\_result\.data\.\*\.member | string | 
 action\_result\.summary | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.parameter\.use\_samaccountname | string | 
-action\_result\.parameter\.members | string | 
-action\_result\.parameter\.groups | string | 
 action\_result\.summary\.found\_user\_records | numeric | 
 action\_result\.summary\.requested\_user\_records | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -186,17 +186,17 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.member | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.groups | string | 
+action\_result\.parameter\.members | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
 action\_result\.data\.\*\.function | string | 
 action\_result\.data\.\*\.group | string | 
+action\_result\.data\.\*\.member | string | 
 action\_result\.summary | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.parameter\.use\_samaccountname | string | 
-action\_result\.parameter\.members | string | 
-action\_result\.parameter\.groups | string | 
 action\_result\.summary\.found\_user\_records | numeric | 
 action\_result\.summary\.requested\_user\_records | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -215,15 +215,15 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.user\_dn | string | 
-action\_result\.data\.\*\.samaccountname | string | 
-action\_result\.data\.\*\.unlocked | boolean | 
-action\_result\.message | string | 
 action\_result\.status | string | 
 action\_result\.parameter\.use\_samaccountname | boolean | 
-action\_result\.summary | string | 
 action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.samaccountname | string | 
+action\_result\.data\.\*\.unlocked | boolean | 
+action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.summary | string | 
 action\_result\.summary\.unlocked | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -242,13 +242,13 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.user | string |  `user name` 
-action\_result\.data\.\*\.starting\_status | string | 
-action\_result\.summary\.account\_status | string | 
 action\_result\.status | string | 
 action\_result\.parameter\.use\_samaccountname | boolean | 
-action\_result\.message | string | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.starting\_status | string | 
 action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.summary\.account\_status | string | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -267,13 +267,13 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.user | string |  `user name` 
-action\_result\.data\.\*\.starting\_status | string | 
-action\_result\.summary\.account\_status | string | 
 action\_result\.status | string | 
 action\_result\.parameter\.use\_samaccountname | boolean | 
-action\_result\.message | string | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.starting\_status | string | 
 action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.summary\.account\_status | string | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -292,14 +292,14 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.reset | numeric | 
-action\_result\.data\.\*\.user\_dn | string | 
-action\_result\.data\.\*\.samaccountname | string | 
 action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.reset | numeric | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
 action\_result\.parameter\.user | string |  `user name` 
-action\_result\.parameter\.use\_samaccountname | numeric | 
+action\_result\.data\.\*\.reset | numeric | 
+action\_result\.data\.\*\.samaccountname | string | 
+action\_result\.data\.\*\.user\_dn | string | 
+action\_result\.summary\.reset | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -320,17 +320,17 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
+action\_result\.status | string | 
+action\_result\.parameter\.confirm\_password | string | 
+action\_result\.parameter\.password | string | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
 action\_result\.parameter\.user | string |  `user name` 
+action\_result\.data\.\*\.samaccountname | string | 
 action\_result\.data\.\*\.set | boolean | 
 action\_result\.data\.\*\.user\_dn | string | 
-action\_result\.data\.\*\.samaccountname | string | 
-action\_result\.parameter\.password | string | 
-action\_result\.parameter\.confirm\_password | string | 
-action\_result\.status | string | 
-action\_result\.parameter\.use\_samaccountname | boolean | 
 action\_result\.summary | string | 
-action\_result\.message | string | 
 action\_result\.summary\.set | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -349,12 +349,12 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.object | string | 
-action\_result\.parameter\.destination\_ou | string | 
-action\_result\.summary\.moved | string | 
-action\_result\.data\.\*\.source\_object | string | 
-action\_result\.data\.\*\.destination\_container | string | 
 action\_result\.status | string | 
+action\_result\.parameter\.destination\_ou | string | 
+action\_result\.parameter\.object | string | 
+action\_result\.data\.\*\.destination\_container | string | 
+action\_result\.data\.\*\.source\_object | string | 
+action\_result\.summary\.moved | string | 
 action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
@@ -377,15 +377,15 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.entries\.\*\.attributes | string | 
+action\_result\.status | string | 
+action\_result\.parameter\.attributes | string | 
 action\_result\.parameter\.filter | string | 
 action\_result\.parameter\.search\_base | string | 
-action\_result\.parameter\.attributes | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_objects | numeric | 
-action\_result\.data\.\*\.entries\.\*\.dn | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes | string | 
 action\_result\.data\.\*\.entries\.\*\.attributes\.samaccountname | string | 
+action\_result\.data\.\*\.entries\.\*\.dn | string | 
+action\_result\.summary\.total\_objects | numeric | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
@@ -406,16 +406,16 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.parameter\.principals | string | 
-action\_result\.parameter\.attributes | string | 
 action\_result\.status | string | 
+action\_result\.parameter\.attributes | string | 
+action\_result\.parameter\.principals | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes | string | 
+action\_result\.data\.\*\.entries\.\*\.attributes\.objectGUID | string | 
+action\_result\.data\.\*\.entries\.\*\.dn | string | 
+action\_result\.summary | string | 
+action\_result\.summary\.total\_objects | numeric | 
 action\_result\.message | string | 
 summary\.total\_objects | numeric | 
-action\_result\.summary | string | 
-action\_result\.data\.\*\.entries\.\*\.attributes | string | 
-action\_result\.data\.\*\.entries\.\*\.dn | string | 
-action\_result\.data\.\*\.entries\.\*\.attributes\.objectGUID | string | 
-action\_result\.summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric |   
 
 ## action: 'set attribute'
@@ -436,14 +436,14 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS
 --------- | ---- | --------
-action\_result\.data\.\*\.message | string | 
 action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.summary | string | 
-action\_result\.parameter\.user | string |  `user name` 
-action\_result\.parameter\.value | string | 
 action\_result\.parameter\.action | string | 
 action\_result\.parameter\.attribute | string | 
-action\_result\.parameter\.use\_samaccountname | numeric | 
+action\_result\.parameter\.use\_samaccountname | boolean | 
+action\_result\.parameter\.user | string |  `user name` 
+action\_result\.parameter\.value | string | 
+action\_result\.data\.\*\.message | string | 
+action\_result\.summary\.summary | string | 
+action\_result\.message | string | 
 summary\.total\_objects | numeric | 
 summary\.total\_objects\_successful | numeric | 
