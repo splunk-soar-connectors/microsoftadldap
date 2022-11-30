@@ -10,22 +10,22 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2021-2022 Splunk Inc.",
-    "app_version": "2.1.0",
+    "app_version": "2.2.0",
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "5.2.0",
+    "min_phantom_version": "5.3.5",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
-        "ldap3 on 13/06/2022"
+        "ldap3 on 16/11/2022"
     ],
     "pip_dependencies": {
         "wheel": [
             {
                 "module": "certifi",
-                "input_file": "wheels/py3/certifi-2022.5.18.1-py3-none-any.whl"
+                "input_file": "wheels/py3/certifi-2022.9.24-py3-none-any.whl"
             },
             {
                 "module": "chardet",
@@ -49,7 +49,7 @@
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/shared/urllib3-1.26.9-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/urllib3-1.26.12-py2.py3-none-any.whl"
             }
         ]
     },
@@ -132,12 +132,33 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.member",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Member",
-                    "column_order": 0,
                     "example_values": [
-                        "cn=svc-splunk,ou=splunk,dc=splunk,dc=lab"
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.groups",
+                    "data_type": "string",
+                    "example_values": [
+                        "Domain Guests"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.members",
+                    "data_type": "string",
+                    "example_values": [
+                        "svc-test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
                     ]
                 },
                 {
@@ -155,48 +176,21 @@
                     "column_name": "Group",
                     "column_order": 2,
                     "example_values": [
-                        "cn=domain guests,cn=users,dc=splunk,dc=lab"
+                        "cn=domain guests,cn=users,dc=test,dc=lab"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.member",
+                    "data_type": "string",
+                    "column_name": "Member",
+                    "column_order": 0,
+                    "example_values": [
+                        "cn=svc-test,ou=test,dc=test,dc=lab"
                     ]
                 },
                 {
                     "data_path": "action_result.summary",
                     "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "added member(s) to group(s)"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "string",
-                    "example_values": [
-                        true
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.members",
-                    "data_type": "string",
-                    "example_values": [
-                        "svc-splunk"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.groups",
-                    "data_type": "string",
-                    "example_values": [
-                        "Domain Guests"
-                    ]
                 },
                 {
                     "data_path": "action_result.summary.found_user_records",
@@ -210,6 +204,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "added member(s) to group(s)"
                     ]
                 },
                 {
@@ -260,12 +261,33 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.member",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Member",
-                    "column_order": 0,
                     "example_values": [
-                        "cn=svc-splunk,ou=splunk,dc=splunk,dc=lab"
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.groups",
+                    "data_type": "string",
+                    "example_values": [
+                        "Domain Guests"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.members",
+                    "data_type": "string",
+                    "example_values": [
+                        "svc-test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
                     ]
                 },
                 {
@@ -283,48 +305,21 @@
                     "column_name": "Group",
                     "column_order": 2,
                     "example_values": [
-                        "cn=domain guests,cn=users,dc=splunk,dc=lab"
+                        "cn=domain guests,cn=users,dc=test,dc=lab"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.member",
+                    "data_type": "string",
+                    "column_name": "Member",
+                    "column_order": 0,
+                    "example_values": [
+                        "cn=svc-test,ou=test,dc=test,dc=lab"
                     ]
                 },
                 {
                     "data_path": "action_result.summary",
                     "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "removed member(s) from group(s)"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "string",
-                    "example_values": [
-                        true
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.members",
-                    "data_type": "string",
-                    "example_values": [
-                        "svc-splunk"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.groups",
-                    "data_type": "string",
-                    "example_values": [
-                        "Domain Guests"
-                    ]
                 },
                 {
                     "data_path": "action_result.summary.found_user_records",
@@ -338,6 +333,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "removed member(s) from group(s)"
                     ]
                 },
                 {
@@ -387,12 +389,29 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.user_dn",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "User Dn",
-                    "column_order": 0,
                     "example_values": [
-                        "cn=defaultaccount,cn=users,dc=splunk,dc=lab"
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.user",
+                    "data_type": "string",
+                    "contains": [
+                        "user name"
+                    ],
+                    "example_values": [
+                        "CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB"
                     ]
                 },
                 {
@@ -411,25 +430,12 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.message",
+                    "data_path": "action_result.data.*.user_dn",
                     "data_type": "string",
+                    "column_name": "User Dn",
+                    "column_order": 0,
                     "example_values": [
-                        "Unlocked: True"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "boolean",
-                    "example_values": [
-                        false
+                        "cn=defaultaccount,cn=users,dc=test,dc=lab"
                     ]
                 },
                 {
@@ -437,20 +443,17 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.parameter.user",
-                    "data_type": "string",
-                    "contains": [
-                        "user name"
-                    ],
-                    "example_values": [
-                        "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
                     "data_path": "action_result.summary.unlocked",
                     "data_type": "numeric",
                     "example_values": [
                         true
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Unlocked: True"
                     ]
                 },
                 {
@@ -501,6 +504,22 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.user",
                     "data_type": "string",
                     "contains": [
@@ -509,7 +528,7 @@
                     "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
-                        "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
+                        "CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB"
                     ]
                 },
                 {
@@ -522,6 +541,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.user_dn",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=defaultaccount,cn=users,dc=test,dc=lab"
+                    ]
+                },
+                {
                     "data_path": "action_result.summary.account_status",
                     "data_type": "string",
                     "column_name": "Current Status",
@@ -531,32 +557,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "boolean",
-                    "example_values": [
-                        false
-                    ]
-                },
-                {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
                         "Account status: disabled"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user_dn",
-                    "data_type": "string",
-                    "example_values": [
-                        "cn=defaultaccount,cn=users,dc=splunk,dc=lab"
                     ]
                 },
                 {
@@ -607,6 +611,22 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.user",
                     "data_type": "string",
                     "contains": [
@@ -615,7 +635,7 @@
                     "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
-                        "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
+                        "CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB"
                     ]
                 },
                 {
@@ -628,6 +648,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.user_dn",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=defaultaccount,cn=users,dc=test,dc=lab"
+                    ]
+                },
+                {
                     "data_path": "action_result.summary.account_status",
                     "data_type": "string",
                     "column_name": "Current Status",
@@ -637,32 +664,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "boolean",
-                    "example_values": [
-                        false
-                    ]
-                },
-                {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
                         "Account status: enabled"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user_dn",
-                    "data_type": "string",
-                    "example_values": [
-                        "cn=defaultaccount,cn=users,dc=splunk,dc=lab"
                     ]
                 },
                 {
@@ -711,29 +716,6 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.reset",
-                    "data_type": "numeric",
-                    "column_name": "Password Was Reset",
-                    "column_order": 1,
-                    "example_values": [
-                        true
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user_dn",
-                    "data_type": "string",
-                    "example_values": [
-                        "CN=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.samaccountname",
-                    "data_type": "string",
-                    "example_values": [
-                        "SVC-SPLUNK"
-                    ]
-                },
-                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
@@ -742,17 +724,11 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
                     "example_values": [
-                        "Reset: True"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.reset",
-                    "data_type": "numeric",
-                    "example_values": [
-                        true
+                        true,
+                        false
                     ]
                 },
                 {
@@ -764,14 +740,44 @@
                     "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
-                        "SVC-SPLUNK"
+                        "SVC-TEST"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_path": "action_result.data.*.reset",
+                    "data_type": "numeric",
+                    "column_name": "Password Was Reset",
+                    "column_order": 1,
+                    "example_values": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.samaccountname",
+                    "data_type": "string",
+                    "example_values": [
+                        "SVC-TEST"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user_dn",
+                    "data_type": "string",
+                    "example_values": [
+                        "CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.reset",
                     "data_type": "numeric",
                     "example_values": [
                         true
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Reset: True"
                     ]
                 },
                 {
@@ -835,6 +841,36 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.confirm_password",
+                    "data_type": "string",
+                    "example_values": [
+                        "Thisisanewpw!123"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.password",
+                    "data_type": "string",
+                    "example_values": [
+                        "Thisisanewpw!123"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.user",
                     "data_type": "string",
                     "contains": [
@@ -843,8 +879,12 @@
                     "column_name": "Target User",
                     "column_order": 0,
                     "example_values": [
-                        "CN=DEFAULTACCOUNT,CN=USERS,DC=SPLUNK,DC=LAB"
+                        "CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.samaccountname",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.set",
@@ -859,40 +899,7 @@
                     "data_path": "action_result.data.*.user_dn",
                     "data_type": "string",
                     "example_values": [
-                        "cn=defaultaccount,cn=users,dc=splunk,dc=lab"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.samaccountname",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.password",
-                    "data_type": "string",
-                    "example_values": [
-                        "Thisisanewpw!123"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.confirm_password",
-                    "data_type": "string",
-                    "example_values": [
-                        "Thisisanewpw!123"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "boolean",
-                    "example_values": [
-                        false
+                        "cn=defaultaccount,cn=users,dc=test,dc=lab"
                     ]
                 },
                 {
@@ -900,17 +907,17 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Set: True"
-                    ]
-                },
-                {
                     "data_path": "action_result.summary.set",
                     "data_type": "numeric",
                     "example_values": [
                         true
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Set: True"
                     ]
                 },
                 {
@@ -957,12 +964,11 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.object",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Object",
-                    "column_order": 0,
                     "example_values": [
-                        "CN=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -971,7 +977,30 @@
                     "column_name": "Destination",
                     "column_order": 1,
                     "example_values": [
-                        "OU=SPLUNK,DC=SPLUNK,DC=LAB"
+                        "OU=TEST,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.object",
+                    "data_type": "string",
+                    "column_name": "Object",
+                    "column_order": 0,
+                    "example_values": [
+                        "CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.destination_container",
+                    "data_type": "string",
+                    "example_values": [
+                        "OU=TEST,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.source_object",
+                    "data_type": "string",
+                    "example_values": [
+                        "CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB"
                     ]
                 },
                 {
@@ -979,28 +1008,6 @@
                     "data_type": "string",
                     "example_values": [
                         true
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.source_object",
-                    "data_type": "string",
-                    "example_values": [
-                        "CN=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.destination_container",
-                    "data_type": "string",
-                    "example_values": [
-                        "OU=SPLUNK,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
                     ]
                 },
                 {
@@ -1058,8 +1065,19 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.entries.*.attributes",
-                    "data_type": "string"
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.attributes",
+                    "data_type": "string",
+                    "example_values": [
+                        "sAMAccountName"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.filter",
@@ -1072,29 +1090,25 @@
                     "data_path": "action_result.parameter.search_base",
                     "data_type": "string",
                     "example_values": [
-                        "ou=splunk,dc=splunk,dc=lab"
+                        "ou=test,dc=test,dc=lab"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.attributes",
+                    "data_path": "action_result.data.*.entries.*.attributes",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.entries.*.attributes.samaccountname",
                     "data_type": "string",
                     "example_values": [
-                        "sAMAccountName"
+                        "SVC-TEST"
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.data.*.entries.*.dn",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Total objects: 1"
+                        "CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB"
                     ]
                 },
                 {
@@ -1105,17 +1119,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.entries.*.dn",
+                    "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "CN=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.entries.*.attributes.samaccountname",
-                    "data_type": "string",
-                    "example_values": [
-                        "SVC-SPLUNK"
+                        "Total objects: 1"
                     ]
                 },
                 {
@@ -1166,10 +1173,11 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.principals",
+                    "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "SVC-SPLUNK;defaultaccount"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1180,11 +1188,39 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.parameter.principals",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "SVC-TEST;defaultaccount"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entries.*.attributes",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.entries.*.attributes.objectGUID",
+                    "data_type": "string",
+                    "example_values": [
+                        "{a6c536dd-2487-41dd-8524-0037342505da}"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entries.*.dn",
+                    "data_type": "string",
+                    "example_values": [
+                        "CN=SVC-TEST,OU=test,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
                     ]
                 },
                 {
@@ -1199,35 +1235,6 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.entries.*.attributes",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.entries.*.dn",
-                    "data_type": "string",
-                    "example_values": [
-                        "CN=SVC-SPLUNK,OU=splunk,DC=SPLUNK,DC=LAB"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.entries.*.attributes.objectGUID",
-                    "data_type": "string",
-                    "example_values": [
-                        "{a6c536dd-2487-41dd-8524-0037342505da}"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        2
                     ]
                 },
                 {
@@ -1297,13 +1304,6 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Success"
-                    ]
-                },
-                {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
@@ -1312,42 +1312,6 @@
                     ],
                     "column_name": "Status",
                     "column_order": 4
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Summary: Successfully Set Attributes"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.summary",
-                    "data_type": "string",
-                    "example_values": [
-                        "Successfully Set Attributes"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.user",
-                    "data_type": "string",
-                    "contains": [
-                        "user name"
-                    ],
-                    "column_name": "User",
-                    "column_order": 0,
-                    "example_values": [
-                        "Cn=SVC-SPLUNK,OU=SPLUNK,DC=SPLUNK,DC=LAB",
-                        "SVC-SPLUNK"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.value",
-                    "data_type": "string",
-                    "column_name": "New Value",
-                    "column_order": 2,
-                    "example_values": [
-                        "svc_splunk@splunk.com"
-                    ]
                 },
                 {
                     "data_path": "action_result.parameter.action",
@@ -1369,9 +1333,52 @@
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
-                    "data_type": "numeric",
+                    "data_type": "boolean",
                     "example_values": [
-                        true
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.user",
+                    "data_type": "string",
+                    "contains": [
+                        "user name"
+                    ],
+                    "column_name": "User",
+                    "column_order": 0,
+                    "example_values": [
+                        "Cn=SVC-TEST,OU=TEST,DC=TEST,DC=LAB"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.value",
+                    "data_type": "string",
+                    "column_name": "New Value",
+                    "column_order": 2,
+                    "example_values": [
+                        "svc_test@test.com"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully Set Attributes"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Summary: Successfully Set Attributes"
                     ]
                 },
                 {
