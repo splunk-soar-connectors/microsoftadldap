@@ -476,18 +476,15 @@ class AdLdapConnector(BaseConnector):
     def _handle_set_attribute(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
         summary = action_result.update_summary({})
-
         user = param['user'].lower()
         attribute = param['attribute']
         value = param.get('value')
         action = param['action']
-
         if (action == 'ADD' or action == 'REPLACE') and value is None:
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
             return action_result.set_status(
                 phantom.APP_ERROR, "Value parameter must be filled when using {} action".format(action))
-
         ar_data = {}
         if param["use_samaccountname"]:
             ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
@@ -497,40 +494,54 @@ class AdLdapConnector(BaseConnector):
                 action_result.add_data({"message": "Failed"})
                 summary["message"] = "Failed"
                 return action_result.set_status(phantom.APP_ERROR, "No users found")
-
             ar_data["user_dn"] = user_dn[user]
             ar_data["samaccountname"] = user
             user = user_dn[user]
         else:
             ar_data["user_dn"] = user
-
         changes = {}
-
+        dn_flag = False
         if action == "ADD":
             changes[attribute] = [(ldap3.MODIFY_ADD, [value])]
         elif action == "DELETE":
             changes[attribute] = [(ldap3.MODIFY_DELETE, [])]
         elif action == "REPLACE":
-            changes[attribute] = [(ldap3.MODIFY_REPLACE, [value])]
-
+            if attribute.lower() == "cn" or attribute.lower() == "distinguishedname":
+                dn_flag = True
+                if "cn=" not in value.lower():
+                    action_result.add_data({"message": "Failed"})
+                    summary["message"] = "Failed"
+                    return action_result.set_status(
+                        phantom.APP_ERROR, "value for changing distinguished name must be in the format cn=newname")
+                else:
+                    try:
+                        self.debug_print("[DEBUG] replace distinguishedName {} to {} ".format(user, value))
+                        ret = self._ldap_connection.modify_dn(ar_data["user_dn"], value)
+                        self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
+                    except Exception as e:
+                        self._dump_error_log(e)
+                        action_result.add_data({"message": "Failed"})
+                        summary["message"] = "Failed"
+                        return action_result.set_status(phantom.APP_ERROR, str(e))
+            else:
+                changes[attribute] = [(ldap3.MODIFY_REPLACE, [value])]
         if not self._ldap_bind(action_result):
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
             return action_result.get_status()
-
-        try:
-            self.debug_print("[DEBUG] mod_string = {}".format(changes))
-            ret = self._ldap_connection.modify(
-                dn=ar_data["user_dn"],
-                changes=changes
-            )
-            self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
-        except Exception as e:
-            self._dump_error_log(e)
-            action_result.add_data({"message": "Failed"})
-            summary["message"] = "Failed"
-            return action_result.set_status(phantom.APP_ERROR, str(e))
-
+        if not dn_flag:
+            try:
+                self.debug_print("[DEBUG] no dn_flag, mod_string = {}".format(changes))
+                ret = self._ldap_connection.modify(
+                    dn=ar_data["user_dn"],
+                    changes=changes
+                )
+                self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
+            except Exception as e:
+                self._dump_error_log(e)
+                action_result.add_data({"message": "Failed"})
+                summary["message"] = "Failed"
+                return action_result.set_status(phantom.APP_ERROR, str(e))
         action_result.add_data({"message": ("Success" if ret else "Failed")})
         action_result.set_status(ret)
         summary["summary"] = "Successfully Set Attribute"
