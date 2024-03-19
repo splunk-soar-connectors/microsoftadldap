@@ -6,12 +6,12 @@ Connector Version: 2.2.1
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.3.5  
+Minimum Product Version: 6.1.1  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
 [comment]: # " File: README.md"
-[comment]: # "     Copyright (c) 2021-2023 Splunk Inc."
+[comment]: # "     Copyright (c) 2021-2024 Splunk Inc."
 [comment]: # "     Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "     you may not use this file except in compliance with the License."
 [comment]: # "     You may obtain a copy of the License at"
