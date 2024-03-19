@@ -1,6 +1,6 @@
 # File: adldap_connector.py
 #
-# Copyright (c) 2021-2023 Splunk Inc.
+# Copyright (c) 2021-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -501,6 +501,10 @@ class AdLdapConnector(BaseConnector):
             ar_data["user_dn"] = user
         changes = {}
         dn_flag = False
+        if not self._ldap_bind(action_result):
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.get_status()
         if action == "ADD":
             changes[attribute] = [(ldap3.MODIFY_ADD, [value])]
         elif action == "DELETE":
@@ -525,10 +529,6 @@ class AdLdapConnector(BaseConnector):
                         return action_result.set_status(phantom.APP_ERROR, str(e))
             else:
                 changes[attribute] = [(ldap3.MODIFY_REPLACE, [value])]
-        if not self._ldap_bind(action_result):
-            action_result.add_data({"message": "Failed"})
-            summary["message"] = "Failed"
-            return action_result.get_status()
         if not dn_flag:
             try:
                 self.debug_print("[DEBUG] no dn_flag, mod_string = {}".format(changes))
