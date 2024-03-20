@@ -550,7 +550,7 @@ class AdLdapConnector(BaseConnector):
         action_result.set_status(ret)
         summary["summary"] = "Successfully Set Attribute"
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
-        return action_result.set_status(phantom.APP_SUCCESS, "Successfully Set Attribute")
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def _query(self, action_result, param):
         """
