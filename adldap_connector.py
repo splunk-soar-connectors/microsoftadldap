@@ -194,7 +194,7 @@ class AdLdapConnector(BaseConnector):
         groups = [i.strip() for i in param['groups'].split(';')]
 
         # resolve samaccountname -> distinguishedname if option selected
-        if param['use_samaccountname']:
+        if param.get('use_samaccountname', False):
             n_members = []  # new list of users
             n_groups = []   # new list of groups
             member_nf = []  # not found users
@@ -293,7 +293,7 @@ class AdLdapConnector(BaseConnector):
         user = param['user'].lower()
         ar_data = {}            # data for action_result
 
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -346,7 +346,7 @@ class AdLdapConnector(BaseConnector):
         ar_data = {}
 
         # let the analyst use samaccountname if they wish
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_info = self._sam_to_dn([user], action_result=action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -479,14 +479,18 @@ class AdLdapConnector(BaseConnector):
         user = param['user'].lower()
         attribute = param['attribute']
         value = param.get('value')
-        action = param['action']
-        if (action == 'ADD' or action == 'REPLACE') and value is None:
+        action = param['action'].lower()
+        if action not in ['add', 'replace', 'delete']:
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please enter a valid value for action parameter from: ['ADD' , 'REPLACE' , 'DELETE']")
+
+        if (action == 'add' or action == 'replace') and value is None:
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
             return action_result.set_status(
                 phantom.APP_ERROR, "Value parameter must be filled when using {} action".format(action))
         ar_data = {}
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -505,11 +509,11 @@ class AdLdapConnector(BaseConnector):
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
             return action_result.get_status()
-        if action == "ADD":
+        if action == "add":
             changes[attribute] = [(ldap3.MODIFY_ADD, [value])]
-        elif action == "DELETE":
+        elif action == "delete":
             changes[attribute] = [(ldap3.MODIFY_DELETE, [])]
-        elif action == "REPLACE":
+        elif action == "replace":
             if attribute.lower() == "cn" or attribute.lower() == "distinguishedname":
                 dn_flag = True
                 if "cn=" not in value.lower():
@@ -546,7 +550,7 @@ class AdLdapConnector(BaseConnector):
         action_result.set_status(ret)
         summary["summary"] = "Successfully Set Attribute"
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
-        return action_result.set_status(phantom.APP_SUCCESS)
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully Set Attribute")
 
     def _query(self, action_result, param):
         """
@@ -617,7 +621,7 @@ class AdLdapConnector(BaseConnector):
         summary = action_result.update_summary({})
 
         ar_data = {}
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -688,7 +692,7 @@ class AdLdapConnector(BaseConnector):
             action_result.add_data(ar_data)
             return action_result.get_status()
 
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -821,7 +825,7 @@ class AdLdapConnector(BaseConnector):
         self._username = config['username']
         self._password = config['password']
         self._ssl = config['force_ssl']
-        self._validate_ssl_cert = config['validate_ssl_cert']
+        self._validate_ssl_cert = config.get('validate_ssl_cert', False)
         self._ssl_port = int(config['ssl_port'])
         self.connected = False
         self._ldap_connection = None
