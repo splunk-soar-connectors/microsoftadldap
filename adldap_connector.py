@@ -715,8 +715,8 @@ class AdLdapConnector(BaseConnector):
             self.debug_print("[DEBUG] handle_set_password, e = {}".format(str(e)))
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            return action_result.set_status(phantom.APP_ERROR, """{}: Make sure account in asset has permissions to Set
-                    Password and password meets complexity requirements""".format(e.description))
+            return action_result.set_status(phantom.APP_ERROR, """{}. Also, please make sure that the account in asset has permissions
+                                            to Set Password and password meets complexity requirements""".format(str(e)))
         self.debug_print("[DEBUG] handle_set_password, ret = {}".format(ret))
         if ret:
             ar_data["set"] = summary["set"] = True
