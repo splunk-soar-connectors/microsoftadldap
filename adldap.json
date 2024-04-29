@@ -14,12 +14,12 @@
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.2.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
-        "ldap3 on 16/11/2022"
+        "ldap3 on 29/04/2023"
     ],
     "pip_dependencies": {
         "wheel": [
