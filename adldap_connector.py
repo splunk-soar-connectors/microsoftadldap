@@ -27,6 +27,7 @@ import ldap3.extend.microsoft.removeMembersFromGroups
 import ldap3.extend.microsoft.unlockAccount
 import phantom.app as phantom
 from ldap3 import Tls
+from ldap3.utils.conv import escape_filter_chars
 from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
 # import json
@@ -140,7 +141,7 @@ class AdLdapConnector(BaseConnector):
         # create a usable ldap filter
         filter = "(|"
         for users in sam:
-            filter = filter + "(samaccountname={})".format(users)
+            filter = filter + "(samaccountname={})".format(escape_filter_chars(users))
         filter = filter + ")"
 
         query_params = {
@@ -363,7 +364,7 @@ class AdLdapConnector(BaseConnector):
         try:
             query_params = {
                 "attributes": "useraccountcontrol",
-                "filter": "(distinguishedname={})".format(user)
+                "filter": "(distinguishedname={})".format(escape_filter_chars(user))
             }
             ret_val, resp = self._query(action_result, query_params)
             if phantom.is_fail(ret_val):
@@ -462,7 +463,7 @@ class AdLdapConnector(BaseConnector):
 
         # build a query on the fly with the principals provided
         for i in principal:
-            query += "(userprincipalname={0})(samaccountname={0})(distinguishedname={0})".format(i)
+            query += "(userprincipalname={0})(samaccountname={0})(distinguishedname={0})".format(escape_filter_chars(i))
         query += ")"
 
         ret_val, resp = self._query(action_result, {"filter": query, "attributes": param['attributes']})
