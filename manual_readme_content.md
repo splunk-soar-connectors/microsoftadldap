@@ -1,5 +1,5 @@
 [comment]: # " File: README.md"
-[comment]: # "     Copyright (c) 2021-2023 Splunk Inc."
+[comment]: # "     Copyright (c) 2021-2024 Splunk Inc."
 [comment]: # "     Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "     you may not use this file except in compliance with the License."
 [comment]: # "     You may obtain a copy of the License at"
@@ -87,4 +87,16 @@ that you would like to return.
     -   If you would like to learn more about LDAP Filter Syntax, check out this [Microsoft
         Wiki](https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx)
 
-  
+
+    - If any of the following special characters must appear in the query filter as literals, they must be replaced by the listed escape sequence.
+
+
+        | ASCII character | Escape sequence substitute |
+        |-----------------|----------------------------|
+        | *               | \2a                      |
+        | (               | \28                      |
+        | )               | \29                      |
+        | \               | \5c                      |
+        | NUL             | \00                      |
+
+        Example: For example, to find all objects where the common name is "James Jim*) Smith", the LDAP filter would be: (cn=James Jim\2A\29 Smith)
