@@ -6,7 +6,7 @@ Connector Version: 2.2.1
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.3.5  
+Minimum Product Version: 6.2.1  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
@@ -99,7 +99,19 @@ that you would like to return.
     -   If you would like to learn more about LDAP Filter Syntax, check out this [Microsoft
         Wiki](https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx)
 
-  
+
+    - If any of the following special characters must appear in the query filter as literals, they must be replaced by the listed escape sequence.
+
+
+        | ASCII character | Escape sequence substitute |
+        |-----------------|----------------------------|
+        | *               | \2a                      |
+        | (               | \28                      |
+        | )               | \29                      |
+        | \               | \5c                      |
+        | NUL             | \00                      |
+
+        Example: For example, to find all objects where the common name is "James Jim*) Smith", the LDAP filter would be: (cn=James Jim\2A\29 Smith)
 
 
 ### Configuration Variables
