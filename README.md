@@ -111,7 +111,7 @@ that you would like to return.
         | \               | \5c                      |
         | NUL             | \00                      |
 
-        Example: For example, to find all objects where the common name is "James Jim*) Smith", the LDAP filter would be: (cn=James Jim\2A\29 Smith)
+        Example: To find all objects where the common name is "James Jim*) Smith", the LDAP filter would be: (cn=James Jim\2A\29 Smith)
 
 
 ### Configuration Variables
