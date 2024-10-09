@@ -127,6 +127,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [run query](#action-run-query) - Query Active Directory LDAP  
 [get attributes](#action-get-attributes) - Get attributes of various principals  
 [set attribute](#action-set-attribute) - Add, delete, or replace an attribute of a user  
+[rename object](#action-rename-object) - Rename the object  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity using supplied configuration
@@ -442,6 +443,34 @@ action_result.parameter.attribute | string |  |   mail
 action_result.parameter.use_samaccountname | boolean |  |   True  False 
 action_result.parameter.user | string |  `user name`  |   Cn=SVC-TEST,OU=TEST,DC=TEST,DC=LAB 
 action_result.parameter.value | string |  |   svc_test@test.com 
+action_result.data.\*.message | string |  |   Success 
+action_result.summary.summary | string |  |   Successfully Set Attributes 
+action_result.message | string |  |   Summary: Successfully Set Attributes 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
+
+## action: 'rename object'
+Rename the object
+
+Type: **generic**  
+Read only: **False**
+
+When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**object** |  optional  | The object to be renamed | string |  `user name` 
+**use_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean | 
+**new_name** |  required  | New name for the object | string |  `user name` 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.object | string |  `user name`  |   cn=test user,ou=test,dc=test,dc=test,dc=com  ou=test,dc=test,dc=test,dc=com 
+action_result.parameter.use_samaccountname | boolean |  |   True  False 
+action_result.parameter.new_name | string |  `user name`  |   cn=new name  ou=new name 
+action_result.status | string |  |   success  failed 
 action_result.data.\*.message | string |  |   Success 
 action_result.summary.summary | string |  |   Successfully Set Attributes 
 action_result.message | string |  |   Summary: Successfully Set Attributes 
