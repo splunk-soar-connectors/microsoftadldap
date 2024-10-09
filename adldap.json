@@ -1371,7 +1371,7 @@
             "action": "rename object",
             "identifier": "rename_object",
             "description": "Rename the object",
-            "verbose":"When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
+            "verbose": "When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -1408,7 +1408,7 @@
                         "cn=test user,ou=test,dc=test,dc=test,dc=com",
                         "ou=test,dc=test,dc=test,dc=com"
                     ],
-                    "contains":[
+                    "contains": [
                         "user name"
                     ]
                 },
@@ -1427,7 +1427,7 @@
                         "cn=new name",
                         "ou=new name"
                     ],
-                    "contains":[
+                    "contains": [
                         "user name"
                     ]
                 },
