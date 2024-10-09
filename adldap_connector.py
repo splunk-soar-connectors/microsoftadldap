@@ -504,7 +504,6 @@ class AdLdapConnector(BaseConnector):
         else:
             ar_data["user_dn"] = user
         changes = {}
-        dn_flag = False
         if not self._ldap_bind(action_result):
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
@@ -514,43 +513,66 @@ class AdLdapConnector(BaseConnector):
         elif action == "delete":
             changes[attribute] = [(ldap3.MODIFY_DELETE, [])]
         elif action == "replace":
-            if attribute.lower() == "cn" or attribute.lower() == "distinguishedname":
-                dn_flag = True
-                if "cn=" not in value.lower():
-                    action_result.add_data({"message": "Failed"})
-                    summary["message"] = "Failed"
-                    return action_result.set_status(
-                        phantom.APP_ERROR, "value for changing distinguished name must be in the format cn=newname")
-                else:
-                    try:
-                        self.debug_print("[DEBUG] replace distinguishedName {} to {} ".format(user, value))
-                        ret = self._ldap_connection.modify_dn(ar_data["user_dn"], value)
-                        self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
-                    except Exception as e:
-                        self._dump_error_log(e)
-                        action_result.add_data({"message": "Failed"})
-                        summary["message"] = "Failed"
-                        return action_result.set_status(phantom.APP_ERROR, str(e))
-            else:
-                changes[attribute] = [(ldap3.MODIFY_REPLACE, [value])]
-        if not dn_flag:
-            try:
-                self.debug_print("[DEBUG] no dn_flag, mod_string = {}".format(changes))
-                ret = self._ldap_connection.modify(
-                    dn=ar_data["user_dn"],
-                    changes=changes
-                )
-                self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
-            except Exception as e:
-                self._dump_error_log(e)
-                action_result.add_data({"message": "Failed"})
-                summary["message"] = "Failed"
-                return action_result.set_status(phantom.APP_ERROR, str(e))
+            
+            changes[attribute] = [(ldap3.MODIFY_REPLACE, [value])]
+        try:
+            self.debug_print("[DEBUG] no dn_flag, mod_string = {}".format(changes))
+            ret = self._ldap_connection.modify(
+                dn=ar_data["user_dn"],
+                changes=changes
+            )
+            self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
+        except Exception as e:
+            self._dump_error_log(e)
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.set_status(phantom.APP_ERROR, str(e))
         action_result.add_data({"message": ("Success" if ret else "Failed")})
         action_result.set_status(ret)
         summary["summary"] = "Successfully Set Attribute"
         self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
         return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_rename_object(self, param):
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        summary = action_result.update_summary({})
+
+        ar_data={}
+        user = param["object"].lower()
+        new_name = param['new_name']
+
+        if not self._ldap_bind(action_result):
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.get_status()
+
+        if param.get("use_samaccountname", False):
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            if not user_dn or user_dn.get(user) is False:
+                action_result.add_data({"message": "Failed"})
+                summary["message"] = "Failed"
+                return action_result.set_status(phantom.APP_ERROR, "No users found")
+
+            ar_data["user_dn"] = user_dn[user]
+            ar_data["samaccountname"] = user
+            user = user_dn[user]
+        else:
+            ar_data["user_dn"] = user
+
+        try:
+            self.debug_print("[DEBUG] replace distinguishedName {} to {} ".format(param['object'], new_name))
+            ret = self._ldap_connection.modify_dn(ar_data["user_dn"], new_name)
+            self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
+        except Exception as e:
+            self._dump_error_log(e)
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.set_status(phantom.APP_ERROR, str(e))
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully renamed object")
 
     def _query(self, action_result, param):
         """
@@ -798,6 +820,8 @@ class AdLdapConnector(BaseConnector):
 
         elif action_id == "set_password":
             ret_val = self._handle_set_password(param)
+        elif action_id == "rename_object":
+            ret_val = self._handle_rename_object(param)
 
         action_results = self.get_action_results()
         if len(action_results) > 0:

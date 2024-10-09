@@ -1366,6 +1366,124 @@
                 "title": "Set Attributes"
             },
             "versions": "EQ(*)"
+        },
+        {
+            "action": "rename object",
+            "identifier": "rename_object",
+            "description": "Rename the object",
+            "verbose":"When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "object": {
+                    "description": "The object to be renamed",
+                    "data_type": "string",
+                    "order": 0,
+                    "contains": [
+                        "user name"
+                    ],
+                    "primary": true
+                },
+                "use_samaccountname": {
+                    "description": "Use sAMAccountName instead of distinguishedName",
+                    "data_type": "boolean",
+                    "order": 1
+                },
+                "new_name": {
+                    "description": "New name for the object",
+                    "data_type": "string",
+                    "required": true,
+                    "contains": [
+                        "user name"
+                    ],
+                    "order": 2,
+                    "primary": true
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.object",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=test user,ou=test,dc=test,dc=test,dc=com",
+                        "ou=test,dc=test,dc=test,dc=com"
+                    ],
+                    "contains":[
+                        "user name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.new_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=new name",
+                        "ou=new name"
+                    ],
+                    "contains":[
+                        "user name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully Set Attributes"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Summary: Successfully Set Attributes"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table",
+                "width": 10,
+                "height": 5,
+                "title": "Rename Object"
+            },
+            "versions": "EQ(*)"
         }
     ]
 }
