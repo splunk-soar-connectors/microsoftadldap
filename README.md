@@ -6,7 +6,7 @@ Connector Version: 2.3.0
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.2.0  
+Minimum Product Version: 5.2.0  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
@@ -467,9 +467,9 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.parameter.object | string |  `user name`  |   cn=test user,ou=test,dc=test,dc=test,dc=com  ou=test,dc=test,dc=test,dc=com 
+action_result.parameter.object | string |  `user name`  |   cn=test user,ou=test,dc=test,dc=test,dc=com 
 action_result.parameter.use_samaccountname | boolean |  |   True  False 
-action_result.parameter.new_name | string |  `user name`  |   cn=new name  ou=new name 
+action_result.parameter.new_name | string |  `user name`  |   cn=new name 
 action_result.status | string |  |   success  failed 
 action_result.data.\*.message | string |  |   Success 
 action_result.summary.summary | string |  |   Successfully Set Attributes 
