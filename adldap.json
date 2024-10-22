@@ -14,7 +14,7 @@
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "6.2.0",
+    "min_phantom_version": "5.2.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
@@ -392,7 +392,7 @@
                 {
                     "data_path": "action_result.data.*.samaccountname",
                     "data_type": "string",
-                    "column_name": "SAM Account Name",
+                    "column_name": "Sam Account Name",
                     "column_order": 1
                 },
                 {
@@ -1405,8 +1405,7 @@
                     "data_path": "action_result.parameter.object",
                     "data_type": "string",
                     "example_values": [
-                        "cn=test user,ou=test,dc=test,dc=test,dc=com",
-                        "ou=test,dc=test,dc=test,dc=com"
+                        "cn=test user,ou=test,dc=test,dc=test,dc=com"
                     ],
                     "contains": [
                         "user name"
@@ -1424,8 +1423,7 @@
                     "data_path": "action_result.parameter.new_name",
                     "data_type": "string",
                     "example_values": [
-                        "cn=new name",
-                        "ou=new name"
+                        "cn=new name"
                     ],
                     "contains": [
                         "user name"
@@ -1439,7 +1437,7 @@
                         "failed"
                     ],
                     "column_name": "Status",
-                    "column_order": 4
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.message",

@@ -1,2 +1,2 @@
 **Unreleased**
-* Add feature for replacing 'cn(common name)' in set attributes action [PAPP-33165]
+* Added new action 'rename_object' [PAPP-33165]

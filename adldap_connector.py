@@ -528,7 +528,11 @@ class AdLdapConnector(BaseConnector):
             summary["message"] = "Failed"
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
-        return action_result.set_status(phantom.APP_SUCCESS, "Successfully renamed object")
+        action_result.add_data({"message": ("Success" if ret else "Failed")})
+        action_result.set_status(ret)
+        summary["summary"] = "Successfully Renamed Object"
+        self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def _query(self, action_result, param):
         """
