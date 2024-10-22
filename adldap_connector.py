@@ -519,7 +519,7 @@ class AdLdapConnector(BaseConnector):
             ar_data["user_dn"] = user
 
         try:
-            self.debug_print("[DEBUG] replace distinguishedName {} to {} ".format(param["object"], new_name))
+            self.debug_print("[DEBUG] replace distinguishedName {} to {} ".format(user, new_name))
             ret = self._ldap_connection.modify_dn(ar_data["user_dn"], new_name)
             self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
         except Exception as e:
