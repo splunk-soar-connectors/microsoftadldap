@@ -6,7 +6,7 @@ Connector Version: 2.3.0
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.2.0  
+Minimum Product Version: 6.2.2  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
@@ -460,7 +460,7 @@ When 'use_samaccountname' is false, the object parameter should include the dist
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**object** |  optional  | The object to be renamed | string |  `user name` 
+**object** |  required  | The object to be renamed | string |  `user name` 
 **use_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean | 
 **new_name** |  required  | New name for the object | string |  `user name` 
 
