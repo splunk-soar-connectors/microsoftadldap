@@ -14,7 +14,7 @@
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "5.2.0",
+    "min_phantom_version": "6.2.2",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
@@ -1378,6 +1378,7 @@
                 "object": {
                     "description": "The object to be renamed",
                     "data_type": "string",
+                    "required":true,
                     "order": 0,
                     "contains": [
                         "user name"
