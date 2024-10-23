@@ -1410,7 +1410,9 @@
                     ],
                     "contains": [
                         "user name"
-                    ]
+                    ],
+                    "column_name":"Object",
+                    "column_order":0
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
@@ -1428,7 +1430,9 @@
                     ],
                     "contains": [
                         "user name"
-                    ]
+                    ],
+                    "column_name":"New Name",
+                    "column_order":1
                 },
                 {
                     "data_path": "action_result.status",
@@ -1438,7 +1442,7 @@
                         "failed"
                     ],
                     "column_name": "Status",
-                    "column_order": 0
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.message",
