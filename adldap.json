@@ -392,7 +392,7 @@
                 {
                     "data_path": "action_result.data.*.samaccountname",
                     "data_type": "string",
-                    "column_name": "Sam Account Name",
+                    "column_name": "SAM Account Name",
                     "column_order": 1
                 },
                 {
@@ -1371,14 +1371,14 @@
             "action": "rename object",
             "identifier": "rename_object",
             "description": "Rename the object",
-            "verbose": "When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
+            "verbose": "When 'use_samaccountname' is false, the 'object' parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the new name to the attribute name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
             "type": "generic",
             "read_only": false,
             "parameters": {
                 "object": {
                     "description": "The object to be renamed",
                     "data_type": "string",
-                    "required":true,
+                    "required": true,
                     "order": 0,
                     "contains": [
                         "user name"
@@ -1411,8 +1411,8 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name":"Object",
-                    "column_order":0
+                    "column_name": "Object",
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.use_samaccountname",
@@ -1431,8 +1431,8 @@
                     "contains": [
                         "user name"
                     ],
-                    "column_name":"New Name",
-                    "column_order":1
+                    "column_name": "New Name",
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.status",
@@ -1455,14 +1455,14 @@
                     "data_path": "action_result.summary.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully Set Attributes"
+                        "Successfully Renamed Object"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Summary: Successfully Set Attributes"
+                        "Summary: Successfully Renamed Object"
                     ]
                 },
                 {
