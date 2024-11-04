@@ -455,7 +455,7 @@ Rename the object
 Type: **generic**  
 Read only: **False**
 
-When 'use_samaccountname' is false, the object parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the attribute to the desired name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.
+When 'use_samaccountname' is false, the 'object' parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the new name to the attribute name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
@@ -472,7 +472,7 @@ action_result.parameter.use_samaccountname | boolean |  |   True  False
 action_result.parameter.new_name | string |  `user name`  |   cn=new name 
 action_result.status | string |  |   success  failed 
 action_result.data.\*.message | string |  |   Success 
-action_result.summary.summary | string |  |   Successfully Set Attributes 
-action_result.message | string |  |   Summary: Successfully Set Attributes 
+action_result.summary.summary | string |  |   Successfully Renamed Object 
+action_result.message | string |  |   Summary: Successfully Renamed Object 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 
