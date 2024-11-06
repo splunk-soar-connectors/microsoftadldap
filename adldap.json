@@ -19,7 +19,7 @@
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
-        "ldap3 on 29/04/2023"
+        "ldap3 on 25/10/2024"
     ],
     "pip_dependencies": {
         "wheel": [
