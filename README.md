@@ -2,16 +2,16 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2.2.1  
+Connector Version: 2.3.0  
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.3.5  
+Minimum Product Version: 6.2.2  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
 [comment]: # " File: README.md"
-[comment]: # "     Copyright (c) 2021-2023 Splunk Inc."
+[comment]: # "     Copyright (c) 2021-2024 Splunk Inc."
 [comment]: # "     Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "     you may not use this file except in compliance with the License."
 [comment]: # "     You may obtain a copy of the License at"
@@ -127,6 +127,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [run query](#action-run-query) - Query Active Directory LDAP  
 [get attributes](#action-get-attributes) - Get attributes of various principals  
 [set attribute](#action-set-attribute) - Add, delete, or replace an attribute of a user  
+[rename object](#action-rename-object) - Rename the object  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity using supplied configuration
@@ -445,5 +446,33 @@ action_result.parameter.value | string |  |   svc_test@test.com
 action_result.data.\*.message | string |  |   Success 
 action_result.summary.summary | string |  |   Successfully Set Attributes 
 action_result.message | string |  |   Summary: Successfully Set Attributes 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
+
+## action: 'rename object'
+Rename the object
+
+Type: **generic**  
+Read only: **False**
+
+When 'use_samaccountname' is false, the 'object' parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the new name to the attribute name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**object** |  required  | The object to be renamed | string |  `user name` 
+**use_samaccountname** |  optional  | Use sAMAccountName instead of distinguishedName | boolean | 
+**new_name** |  required  | New name for the object | string |  `user name` 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.object | string |  `user name`  |   cn=test user,ou=test,dc=test,dc=test,dc=com 
+action_result.parameter.use_samaccountname | boolean |  |   True  False 
+action_result.parameter.new_name | string |  `user name`  |   cn=new name 
+action_result.status | string |  |   success  failed 
+action_result.data.\*.message | string |  |   Success 
+action_result.summary.summary | string |  |   Successfully Renamed Object 
+action_result.message | string |  |   Summary: Successfully Renamed Object 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 

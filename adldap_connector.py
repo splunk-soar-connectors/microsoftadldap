@@ -1,6 +1,6 @@
 # File: adldap_connector.py
 #
-# Copyright (c) 2021-2023 Splunk Inc.
+# Copyright (c) 2021-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import phantom.app as phantom
 from ldap3 import Tls
 from ldap3.utils.dn import parse_dn
 from phantom.action_result import ActionResult
+
 # import json
 from phantom.base_connector import BaseConnector
 from phantom_common import paths
@@ -47,7 +48,7 @@ class AdLdapConnector(BaseConnector):
         super(AdLdapConnector, self).__init__()
 
     def replace_null_values(self, data):
-        return json.loads(json.dumps(data).replace('\\u0000', '\\\\u0000'))
+        return json.loads(json.dumps(data).replace("\\u0000", "\\\\u0000"))
 
     def _dump_error_log(self, error, message="Exception occurred."):
         self.error_print(message, dump_object=error)
@@ -61,9 +62,7 @@ class AdLdapConnector(BaseConnector):
         appropriately use it. Otherwise just return
         APP_SUCCESS/APP_ERROR
         """
-        if self._ldap_connection and \
-                self._ldap_connection.bound and \
-                not self._ldap_connection.closed:
+        if self._ldap_connection and self._ldap_connection.bound and not self._ldap_connection.closed:
             return True
         elif self._ldap_connection is not None:
             self._ldap_connection.unbind()
@@ -74,28 +73,16 @@ class AdLdapConnector(BaseConnector):
             else:
                 tls = Tls(validate=ssl.CERT_NONE)
 
-            server_param = {
-                "use_ssl": self._ssl,
-                "port": self._ssl_port,
-                "host": self._server,
-                "get_info": ldap3.ALL,
-                "tls": tls
-            }
+            server_param = {"use_ssl": self._ssl, "port": self._ssl_port, "host": self._server, "get_info": ldap3.ALL, "tls": tls}
 
             self._ldap_server = ldap3.Server(**server_param)
             self.save_progress("configured server {}...".format(self._server))
-            self._ldap_connection = ldap3.Connection(self._ldap_server,
-                                                     user=self._username,
-                                                     password=self._password,
-                                                     raise_exceptions=True)
+            self._ldap_connection = ldap3.Connection(self._ldap_server, user=self._username, password=self._password, raise_exceptions=True)
             self.save_progress("binding to directory...")
 
             if not self._ldap_connection.bind():
                 if action_result:
-                    return action_result.set_status(
-                        phantom.APP_ERROR,
-                        self._ldap_connection.result['description']
-                    )
+                    return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result["description"])
                 else:
                     return phantom.APP_ERROR
 
@@ -105,11 +92,10 @@ class AdLdapConnector(BaseConnector):
                 return phantom.APP_SUCCESS
 
         except Exception as e:
-            self.debug_print("[DEBUG] ldap_bind, e = {}".format(str(e)))
+            self.debug_print("ldap_bind, e = {}".format(str(e)))
             self._dump_error_log(e)
             if action_result:
-                return action_result.set_status(
-                    phantom.APP_ERROR, str(e))
+                return action_result.set_status(phantom.APP_ERROR, str(e))
             else:
                 return phantom.APP_ERROR
 
@@ -119,8 +105,7 @@ class AdLdapConnector(BaseConnector):
         """
         if self._ldap_bind():
             try:
-                return \
-                    self._ldap_connection.server.info.other['defaultNamingContext'][0]
+                return self._ldap_connection.server.info.other["defaultNamingContext"][0]
             except Exception:
                 return False
         else:
@@ -143,10 +128,7 @@ class AdLdapConnector(BaseConnector):
             filter = filter + "(samaccountname={})".format(users)
         filter = filter + ")"
 
-        query_params = {
-            "attributes": "distinguishedname;samaccountname",
-            "filter": filter
-        }
+        query_params = {"attributes": "distinguishedname;samaccountname", "filter": filter}
 
         ret_val, dn = self._query(action_result, query_params)
         if phantom.is_fail(ret_val):
@@ -157,13 +139,13 @@ class AdLdapConnector(BaseConnector):
         # then, if we find our samaccountname in the result, grab the distinguishedname,
         # put it in the dict, and return it (else the default of False).
         return_value = {name.lower(): False for name in sam}
-        self.debug_print("[DEBUG] _sam_to_dn entries = {}".format(dn['entries']))
-        for entries in dn['entries']:
-            samaccountname = (entries['attributes']['sAMAccountName']).lower()
+        self.debug_print("_sam_to_dn entries = {}".format(dn["entries"]))
+        for entries in dn["entries"]:
+            samaccountname = (entries["attributes"]["sAMAccountName"]).lower()
             if samaccountname in return_value:
-                return_value[samaccountname] = (entries['attributes']['distinguishedName']).lower()
+                return_value[samaccountname] = (entries["attributes"]["distinguishedName"]).lower()
 
-        self.debug_print("[DEBUG] _sam_to_dn return_value = {}".format(return_value))
+        self.debug_print("_sam_to_dn return_value = {}".format(return_value))
 
         return action_result.set_status(phantom.APP_SUCCESS), return_value
 
@@ -173,10 +155,9 @@ class AdLdapConnector(BaseConnector):
         that do not match type=searchResRef
         """
         try:
-            return [i for i in self._ldap_connection.response
-                    if i['type'] != 'searchResRef']
+            return [i for i in self._ldap_connection.response if i["type"] != "searchResRef"]
         except Exception as e:
-            self.debug_print("[DEBUG] get_filtered_response(), exception: {}".format(str(e)))
+            self.debug_print("get_filtered_response(), exception: {}".format(str(e)))
             return []
 
     def _handle_group_members(self, param, add):
@@ -190,15 +171,15 @@ class AdLdapConnector(BaseConnector):
         if not self._ldap_bind(action_result):
             return action_result.get_status()
 
-        members = [i.strip() for i in param['members'].split(';')]
-        groups = [i.strip() for i in param['groups'].split(';')]
+        members = [i.strip() for i in param["members"].split(";")]
+        groups = [i.strip() for i in param["groups"].split(";")]
 
         # resolve samaccountname -> distinguishedname if option selected
-        if param['use_samaccountname']:
+        if param.get("use_samaccountname", False):
             n_members = []  # new list of users
-            n_groups = []   # new list of groups
+            n_groups = []  # new list of groups
             member_nf = []  # not found users
-            group_nf = []   # not found groups
+            group_nf = []  # not found groups
 
             # finding users dn by sam
             ret_val, t_users = self._sam_to_dn(members, action_result=action_result)
@@ -207,11 +188,9 @@ class AdLdapConnector(BaseConnector):
 
             # add summary regarding number of records requested
             # vs number of records found.
-            action_result.update_summary({
-                "requested_user_records": len(members),
-                "found_user_records": len([k for (k, v) in list(t_users.items())
-                                            if v is not False])
-            })
+            action_result.update_summary(
+                {"requested_user_records": len(members), "found_user_records": len([k for (k, v) in list(t_users.items()) if v is not False])}
+            )
             for k, v in list(t_users.items()):
                 if v is False:
                     member_nf.append(k)
@@ -237,34 +216,28 @@ class AdLdapConnector(BaseConnector):
                 members = n_members
                 groups = n_groups
             else:
-                self.debug_print("[DEBUG] n_members = {}".format(n_members))
-                self.debug_print("[DEBUG] n_groups = {}".format(n_groups))
+                self.debug_print("n_members = {}".format(n_members))
+                self.debug_print("n_groups = {}".format(n_groups))
                 return action_result.set_status(phantom.APP_ERROR, "Not enough groups or members")
 
         try:
             if add:
                 func = "added"
                 ldap3.extend.microsoft.addMembersToGroups.ad_add_members_to_groups(
-                    connection=self._ldap_connection,
-                    members_dn=members,
-                    groups_dn=groups,
-                    fix=True,
-                    raise_error=True
+                    connection=self._ldap_connection, members_dn=members, groups_dn=groups, fix=True, raise_error=True
                 )
             else:
                 func = "removed"
                 ldap3.extend.microsoft.removeMembersFromGroups.ad_remove_members_from_groups(
-                    connection=self._ldap_connection,
-                    members_dn=members,
-                    groups_dn=groups,
-                    fix=True,
-                    raise_error=True
+                    connection=self._ldap_connection, members_dn=members, groups_dn=groups, fix=True, raise_error=True
                 )
         except Exception as e:
             self._dump_error_log(e)
             if type(e).__name__ == "LDAPInvalidDnError":
-                error_msg = "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and " \
-                            "group(s) values must be in distinguishedName format"
+                error_msg = (
+                    "LDAPInvalidDnError: If 'use samaccountname' is unchecked, member(s) and "
+                    "group(s) values must be in distinguishedName format"
+                )
             else:
                 error_msg = str(e)
             return action_result.set_status(phantom.APP_ERROR, error_msg)
@@ -272,13 +245,8 @@ class AdLdapConnector(BaseConnector):
         # add action data results
         for i in members:
             for j in groups:
-                action_result.add_data({
-                    "member": i,
-                    "group": j,
-                    "function": func
-                })
-        return action_result.set_status(phantom.APP_SUCCESS,
-            "{} member(s) {} group(s)".format(func, "to" if func == "added" else "from"))
+                action_result.add_data({"member": i, "group": j, "function": func})
+        return action_result.set_status(phantom.APP_SUCCESS, "{} member(s) {} group(s)".format(func, "to" if func == "added" else "from"))
 
     def _handle_unlock_account(self, param):
         """
@@ -290,11 +258,11 @@ class AdLdapConnector(BaseConnector):
         """
         action_result = self.add_action_result(ActionResult(dict(param)))
         summary = action_result.update_summary({})
-        user = param['user'].lower()
-        ar_data = {}            # data for action_result
+        user = param["user"].lower()
+        ar_data = {}  # data for action_result
 
-        if param["use_samaccountname"]:
-            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+        if param.get("use_samaccountname", False):
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)  # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
@@ -322,10 +290,7 @@ class AdLdapConnector(BaseConnector):
             self._dump_error_log(e)
             ar_data["unlocked"] = summary["unlocked"] = False
             action_result.add_data(ar_data)
-            return action_result.set_status(
-                phantom.APP_ERROR,
-                str(e)
-            )
+            return action_result.set_status(phantom.APP_ERROR, str(e))
 
         action_result.add_data(ar_data)
         summary["unlocked"] = True
@@ -342,11 +307,11 @@ class AdLdapConnector(BaseConnector):
         if not self._ldap_bind(action_result):
             return action_result.get_status()
 
-        user = param['user'].lower()
+        user = param["user"].lower()
         ar_data = {}
 
         # let the analyst use samaccountname if they wish
-        if param["use_samaccountname"]:
+        if param.get("use_samaccountname", False):
             ret_val, user_info = self._sam_to_dn([user], action_result=action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
@@ -361,19 +326,16 @@ class AdLdapConnector(BaseConnector):
             ar_data["user_dn"] = user
 
         try:
-            query_params = {
-                "attributes": "useraccountcontrol",
-                "filter": "(distinguishedname={})".format(user)
-            }
+            query_params = {"attributes": "useraccountcontrol", "filter": "(distinguishedname={})".format(user)}
             ret_val, resp = self._query(action_result, query_params)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             resp = json.loads(resp)
 
-            if len(resp['entries']) == 0:
+            if len(resp["entries"]) == 0:
                 return action_result.set_status(phantom.APP_ERROR, "No user found")
 
-            uac = int(resp['entries'][0]['attributes']['userAccountControl'])
+            uac = int(resp["entries"][0]["attributes"]["userAccountControl"])
 
             # capture the original status for logging
             init_status = "disabled" if (uac & 0x02 != 0) else "enabled"
@@ -381,21 +343,18 @@ class AdLdapConnector(BaseConnector):
 
             if disable:
                 mod_uac = uac | 0x02
-            else:   # enable
+            else:  # enable
                 mod_uac = uac & (0xFFFFFFFF ^ 0x02)
 
-            res = self._ldap_connection.modify(
-                user, {'userAccountControl': [
-                    (ldap3.MODIFY_REPLACE, [mod_uac])
-                ]})
+            res = self._ldap_connection.modify(user, {"userAccountControl": [(ldap3.MODIFY_REPLACE, [mod_uac])]})
             if not res:
                 return action_result.set_status(phantom.APP_ERROR, self._ldap_connection.result)
         except Exception as e:
             self._dump_error_log(e)
-            self.debug_print("[DEBUG] disable_account error = {}".format(str(e)))
+            self.debug_print("disable_account error = {}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
-        summary['account_status'] = actstr
+        summary["account_status"] = actstr
         action_result.add_data(ar_data)
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -409,8 +368,8 @@ class AdLdapConnector(BaseConnector):
         summary = action_result.update_summary({})
         ar_data = {}
 
-        obj = param['object']
-        destination_ou = param['destination_ou']
+        obj = param["object"]
+        destination_ou = param["destination_ou"]
         self.debug_print("Moving an object in AD")
 
         if not self._ldap_bind(action_result):
@@ -419,7 +378,7 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         try:
-            cn = '='.join(parse_dn(obj)[0][:-1])
+            cn = "=".join(parse_dn(obj)[0][:-1])
             res = self._ldap_connection.modify_dn(obj, cn, new_superior=destination_ou)
             if not res:
                 ar_data["moved"] = summary["moved"] = False
@@ -457,7 +416,7 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         query = "(|"
-        principal = [i.strip() for i in param['principals'].split(';')]
+        principal = [i.strip() for i in param["principals"].split(";")]
         self.debug_print("Fetching attributes for a principal")
 
         # build a query on the fly with the principals provided
@@ -465,32 +424,31 @@ class AdLdapConnector(BaseConnector):
             query += "(userprincipalname={0})(samaccountname={0})(distinguishedname={0})".format(i)
         query += ")"
 
-        ret_val, resp = self._query(action_result, {"filter": query, "attributes": param['attributes']})
+        ret_val, resp = self._query(action_result, {"filter": query, "attributes": param["attributes"]})
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(json.loads(resp))
-        summary['total_objects'] = len(self._get_filtered_response())
+        summary["total_objects"] = len(self._get_filtered_response())
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_set_attribute(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
         summary = action_result.update_summary({})
 
-        user = param['user'].lower()
-        attribute = param['attribute']
-        value = param.get('value')
-        action = param['action']
+        user = param["user"].lower()
+        attribute = param["attribute"]
+        value = param.get("value")
+        action = param["action"]
 
-        if (action == 'ADD' or action == 'REPLACE') and value is None:
+        if (action == "ADD" or action == "REPLACE") and value is None:
             action_result.add_data({"message": "Failed"})
             summary["message"] = "Failed"
-            return action_result.set_status(
-                phantom.APP_ERROR, "Value parameter must be filled when using {} action".format(action))
+            return action_result.set_status(phantom.APP_ERROR, "Value parameter must be filled when using {} action".format(action))
 
         ar_data = {}
         if param["use_samaccountname"]:
-            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)  # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
@@ -519,12 +477,9 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         try:
-            self.debug_print("[DEBUG] mod_string = {}".format(changes))
-            ret = self._ldap_connection.modify(
-                dn=ar_data["user_dn"],
-                changes=changes
-            )
-            self.debug_print("[DEBUG] handle_set_attribute, ret = {}".format(ret))
+            self.debug_print("mod_string = {}".format(changes))
+            ret = self._ldap_connection.modify(dn=ar_data["user_dn"], changes=changes)
+            self.debug_print("handle_set_attribute, ret = {}".format(ret))
         except Exception as e:
             self._dump_error_log(e)
             action_result.add_data({"message": "Failed"})
@@ -534,7 +489,52 @@ class AdLdapConnector(BaseConnector):
         action_result.add_data({"message": ("Success" if ret else "Failed")})
         action_result.set_status(ret)
         summary["summary"] = "Successfully Set Attribute"
-        self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
+        self.debug_print("resp = {}".format(self._ldap_connection.response_to_json()))
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_rename_object(self, param):
+        action_result = self.add_action_result(ActionResult(dict(param)))
+        summary = action_result.update_summary({})
+
+        ar_data = {}
+        user = param["object"].lower()
+        new_name = param["new_name"]
+
+        if not self._ldap_bind(action_result):
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.get_status()
+
+        if param.get("use_samaccountname", False):
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            if not user_dn or user_dn.get(user) is False:
+                action_result.add_data({"message": "Failed"})
+                summary["message"] = "Failed"
+                return action_result.set_status(phantom.APP_ERROR, "No users found")
+
+            ar_data["user_dn"] = user_dn[user]
+            ar_data["samaccountname"] = user
+            user = user_dn[user]
+        else:
+            ar_data["user_dn"] = user
+
+        try:
+            self.debug_print("rename distinguishedName {} to {} ".format(user, new_name))
+            ret = self._ldap_connection.modify_dn(ar_data["user_dn"], new_name)
+            self.debug_print("handle_rename_object, ret = {}".format(ret))
+        except Exception as e:
+            self._dump_error_log(e)
+            action_result.add_data({"message": "Failed"})
+            summary["message"] = "Failed"
+            return action_result.set_status(phantom.APP_ERROR, str(e))
+
+        action_result.add_data({"message": ("Success" if ret else "Failed")})
+        action_result.set_status(ret)
+        summary["summary"] = "Successfully Renamed Object"
+        self.debug_print("resp = {}".format(self._ldap_connection.response_to_json()))
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _query(self, action_result, param):
@@ -549,23 +549,19 @@ class AdLdapConnector(BaseConnector):
                 e.g. "mail;samaccountname;pwdlastset")
             - filter (ldap query)
         """
-        attrs = [i.strip() for i in param['attributes'].split(';')]
-        filter = param['filter']
-        search_base = param.get('search_base', self._get_root_dn())
+        attrs = [i.strip() for i in param["attributes"].split(";")]
+        filter = param["filter"]
+        search_base = param.get("search_base", self._get_root_dn())
 
         try:
             # throw exception if we cannot bind
             if not self._ldap_bind(action_result):
                 return action_result.get_status(), {}
 
-            self._ldap_connection.search(
-                search_base=search_base,
-                search_filter=filter,
-                search_scope=ldap3.SUBTREE,
-                attributes=attrs)
+            self._ldap_connection.search(search_base=search_base, search_filter=filter, search_scope=ldap3.SUBTREE, attributes=attrs)
         except Exception as e:
             self._dump_error_log(e)
-            self.debug_print("[DEBUG] {}".format(str(e)))
+            self.debug_print("{}".format(str(e)))
             return action_result.set_status(phantom.APP_ERROR, str(e)), {}
 
         return action_result.set_status(phantom.APP_SUCCESS), self._ldap_connection.response_to_json()
@@ -589,25 +585,22 @@ class AdLdapConnector(BaseConnector):
 
         # unify the attributes returned from AD to lowercase keys
         out_data = json.loads(resp)
-        for i, _ in enumerate(out_data['entries']):
-            out_data['entries'][i]['attributes'] = {
-                k.lower(): v
-                for k, v in list(out_data['entries'][i]['attributes'].items())
-            }
+        for i, _ in enumerate(out_data["entries"]):
+            out_data["entries"][i]["attributes"] = {k.lower(): v for k, v in list(out_data["entries"][i]["attributes"].items())}
 
         # set data path stuff and exit
         action_result.add_data(out_data)
-        summary['total_objects'] = len(self._get_filtered_response())
+        summary["total_objects"] = len(self._get_filtered_response())
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_reset_password(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
-        user = param['user'].lower()
+        user = param["user"].lower()
         summary = action_result.update_summary({})
 
         ar_data = {}
-        if param["use_samaccountname"]:
-            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+        if param.get("use_samaccountname", False):
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)  # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
@@ -630,19 +623,16 @@ class AdLdapConnector(BaseConnector):
             return action_result.get_status()
 
         try:
-            self.debug_print("[DEBUG] mod_string = {}".format(changes))
-            ret = self._ldap_connection.modify(
-                dn=ar_data["user_dn"],
-                changes=changes
-            )
-            self.debug_print("[DEBUG] handle_reset_attribute, ret = {}".format(ret))
+            self.debug_print("mod_string = {}".format(changes))
+            ret = self._ldap_connection.modify(dn=ar_data["user_dn"], changes=changes)
+            self.debug_print("handle_reset_attribute, ret = {}".format(ret))
         except Exception as e:
             self._dump_error_log(e)
             ar_data["reset"] = summary["reset"] = False
             action_result.add_data(ar_data)
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
-        self.debug_print("[DEBUG] resp = {}".format(self._ldap_connection.response_to_json()))
+        self.debug_print("resp = {}".format(self._ldap_connection.response_to_json()))
 
         if ret:
             ar_data["reset"] = summary["reset"] = True
@@ -660,11 +650,11 @@ class AdLdapConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         summary = action_result.update_summary({})
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
-        self.debug_print("[DEBUG] handle_set_password")
+        self.debug_print("handle_set_password")
 
-        user = param['user'].lower()
-        pwd = param['password']
-        confirm_pwd = param['confirm_password']
+        user = param["user"].lower()
+        pwd = param["password"]
+        confirm_pwd = param["confirm_password"]
         ar_data = {}
         if pwd != confirm_pwd:
             ar_data["set"] = summary["set"] = False
@@ -672,13 +662,13 @@ class AdLdapConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Passwords do not match")
 
         if not self._ldap_bind(action_result):
-            self.debug_print("[DEBUG] handle_set_password - no bind")
+            self.debug_print("handle_set_password - no bind")
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
             return action_result.get_status()
 
-        if param["use_samaccountname"]:
-            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)   # _sam_to_dn requires a list.
+        if param.get("use_samaccountname", False):
+            ret_val, user_dn = self._sam_to_dn([user], action_result=action_result)  # _sam_to_dn requires a list.
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             if len(user_dn) == 0 or user_dn[user] is False:
@@ -693,16 +683,21 @@ class AdLdapConnector(BaseConnector):
             ar_data["user_dn"] = user
 
         try:
-            self.debug_print("[DEBUG] about to attempt password set...")
+            self.debug_print("about to attempt password set...")
             ret = self._ldap_connection.extend.microsoft.modify_password(user, pwd)
         except Exception as e:
             self._dump_error_log(e)
-            self.debug_print("[DEBUG] handle_set_password, e = {}".format(str(e)))
+            self.debug_print("handle_set_password, e = {}".format(str(e)))
             ar_data["set"] = summary["set"] = False
             action_result.add_data(ar_data)
-            return action_result.set_status(phantom.APP_ERROR, """{}: Make sure account in asset has permissions to Set
-                    Password and password meets complexity requirements""".format(e.description))
-        self.debug_print("[DEBUG] handle_set_password, ret = {}".format(ret))
+            return action_result.set_status(
+                phantom.APP_ERROR,
+                """{}. Also, please make sure that the account in asset has permissions
+                                            to Set Password and password meets complexity requirements""".format(
+                    str(e)
+                ),
+            )
+        self.debug_print("handle_set_password, ret = {}".format(ret))
         if ret:
             ar_data["set"] = summary["set"] = True
             action_result.add_data(ar_data)
@@ -748,25 +743,25 @@ class AdLdapConnector(BaseConnector):
         self.debug_print("ADLDAPENV = {}".format(os.environ))
         self.debug_print("action_id", self.get_action_identifier())
 
-        if action_id == 'test_connectivity':
+        if action_id == "test_connectivity":
             ret_val = self._handle_test_connectivity(param)
 
-        elif action_id == 'run_query':
+        elif action_id == "run_query":
             ret_val = self._handle_run_query(param)
 
-        elif action_id == 'add_group_members':
+        elif action_id == "add_group_members":
             ret_val = self._handle_add_group_members(param)
 
-        elif action_id == 'remove_group_members':
+        elif action_id == "remove_group_members":
             ret_val = self._handle_remove_group_members(param)
 
-        elif action_id == 'unlock_account':
+        elif action_id == "unlock_account":
             ret_val = self._handle_unlock_account(param)
 
-        elif action_id == 'disable_account':
+        elif action_id == "disable_account":
             ret_val = self._handle_disable_account(param)
 
-        elif action_id == 'enable_account':
+        elif action_id == "enable_account":
             ret_val = self._handle_enable_account(param)
 
         elif action_id == "move_object":
@@ -783,6 +778,8 @@ class AdLdapConnector(BaseConnector):
 
         elif action_id == "set_password":
             ret_val = self._handle_set_password(param)
+        elif action_id == "rename_object":
+            ret_val = self._handle_rename_object(param)
 
         action_results = self.get_action_results()
         if len(action_results) > 0:
@@ -798,20 +795,18 @@ class AdLdapConnector(BaseConnector):
         self._state = self.load_state()
         if not isinstance(self._state, dict):
             self.debug_print("Resetting the state file with the default format")
-            self._state = {
-                "app_version": self.get_app_json().get('app_version')
-            }
+            self._state = {"app_version": self.get_app_json().get("app_version")}
 
         # get the asset config
         config = self.get_config()
 
         # load our config for use.
-        self._server = config['server']
-        self._username = config['username']
-        self._password = config['password']
-        self._ssl = config['force_ssl']
-        self._validate_ssl_cert = config['validate_ssl_cert']
-        self._ssl_port = int(config['ssl_port'])
+        self._server = config["server"]
+        self._username = config["username"]
+        self._password = config["password"]
+        self._ssl = config["force_ssl"]
+        self._validate_ssl_cert = config.get("validate_ssl_cert", False)
+        self._ssl_port = int(config["ssl_port"])
         self.connected = False
         self._ldap_connection = None
 
@@ -824,7 +819,7 @@ class AdLdapConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import argparse
 
@@ -835,10 +830,10 @@ if __name__ == '__main__':
 
     argparser = argparse.ArgumentParser()
 
-    argparser.add_argument('input_test_json', help='Input Test JSON file')
-    argparser.add_argument('-u', '--username', help='username', required=False)
-    argparser.add_argument('-p', '--password', help='password', required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument("input_test_json", help="Input Test JSON file")
+    argparser.add_argument("-u", "--username", help="username", required=False)
+    argparser.add_argument("-p", "--password", help="password", required=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -847,32 +842,33 @@ if __name__ == '__main__':
     password = args.password
     verify = args.verify
 
-    if (username is not None and password is None):
+    if username is not None and password is None:
 
         # User specified a username but not a password, so ask
         import getpass
+
         password = getpass.getpass("Password: ")
 
-    if (username and password):
+    if username and password:
         try:
-            login_url = AdLdapConnector._get_phantom_base_url() + 'login'
+            login_url = AdLdapConnector._get_phantom_base_url() + "login"
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=verify, timeout=DEFAULT_TIMEOUT)
-            csrftoken = r.cookies['csrftoken']
+            csrftoken = r.cookies["csrftoken"]
 
             data = dict()
-            data['username'] = username
-            data['password'] = password
-            data['csrfmiddlewaretoken'] = csrftoken
+            data["username"] = username
+            data["password"] = password
+            data["csrfmiddlewaretoken"] = csrftoken
 
             headers = dict()
-            headers['Cookie'] = 'csrftoken=' + csrftoken
-            headers['Referer'] = login_url
+            headers["Cookie"] = "csrftoken=" + csrftoken
+            headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
             r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=DEFAULT_TIMEOUT)
-            session_id = r2.cookies['sessionid']
+            session_id = r2.cookies["sessionid"]
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
             sys.exit(1)
@@ -885,9 +881,9 @@ if __name__ == '__main__':
         connector = AdLdapConnector()
         connector.print_progress_message = True
 
-        if (session_id is not None):
-            in_json['user_session_token'] = session_id
-            connector._set_csrf_info(csrftoken, headers['Referer'])
+        if session_id is not None:
+            in_json["user_session_token"] = session_id
+            connector._set_csrf_info(csrftoken, headers["Referer"])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))

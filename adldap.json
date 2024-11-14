@@ -9,17 +9,17 @@
     "product_name": "Active Directory LDAP",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2021-2023 Splunk Inc.",
-    "app_version": "2.2.1",
+    "license": "Copyright (c) 2021-2024 Splunk Inc.",
+    "app_version": "2.3.0",
     "utctime_updated": "2022-01-20T22:27:39.000000Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
-    "min_phantom_version": "5.3.5",
+    "min_phantom_version": "6.2.2",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
     "python_version": "3",
     "latest_tested_versions": [
-        "ldap3 on 16/11/2022"
+        "ldap3 on 25/10/2024"
     ],
     "pip_dependencies": {
         "wheel": [
@@ -61,7 +61,6 @@
         "validate_ssl_cert": {
             "description": "Select if you want to validate the LDAP SSL certificate",
             "data_type": "boolean",
-            "default": false,
             "order": 4
         },
         "ssl_port": {
@@ -94,7 +93,6 @@
                 "use_samaccountname": {
                     "description": "Specify members AND groups as sAMAccountName(s) instead of distinguishedName(s) (note: member AND groups will use sAMAccountName if selected)",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "members": {
@@ -223,7 +221,6 @@
                 "use_samaccountname": {
                     "description": "Specify members AND groups as sAMAccountName(s) instead of distinguishedName(s)",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "members": {
@@ -352,7 +349,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName for user instead of distinguishedName(s)",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -363,7 +359,6 @@
                     "contains": [
                         "user name"
                     ],
-                    "default": false,
                     "order": 1
                 }
             },
@@ -467,7 +462,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -478,7 +472,6 @@
                     "contains": [
                         "user name"
                     ],
-                    "default": false,
                     "order": 1
                 }
             },
@@ -574,7 +567,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -585,7 +577,6 @@
                     "contains": [
                         "user name"
                     ],
-                    "default": false,
                     "order": 1
                 }
             },
@@ -680,7 +671,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -790,7 +780,6 @@
                 "use_samaccountname": {
                     "description": "Specify sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -801,21 +790,18 @@
                     "contains": [
                         "user name"
                     ],
-                    "default": false,
                     "order": 1
                 },
                 "password": {
                     "description": "New password",
                     "data_type": "string",
                     "required": true,
-                    "default": false,
                     "order": 2
                 },
                 "confirm_password": {
                     "description": "Re-type the password",
                     "data_type": "string",
                     "required": true,
-                    "default": false,
                     "order": 3
                 }
             },
@@ -931,14 +917,12 @@
                     "description": "Specify the distinguishedName to move",
                     "data_type": "string",
                     "required": true,
-                    "default": false,
                     "order": 0
                 },
                 "destination_ou": {
                     "description": "The distinguishedName of the OU the specified object will move to",
                     "data_type": "string",
                     "required": true,
-                    "default": false,
                     "order": 1
                 }
             },
@@ -1244,7 +1228,6 @@
                 "use_samaccountname": {
                     "description": "Use sAMAccountName instead of distinguishedName",
                     "data_type": "boolean",
-                    "default": false,
                     "order": 0
                 },
                 "user": {
@@ -1381,6 +1364,127 @@
                 "width": 10,
                 "height": 5,
                 "title": "Set Attributes"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "rename object",
+            "identifier": "rename_object",
+            "description": "Rename the object",
+            "verbose": "When 'use_samaccountname' is false, the 'object' parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the new name to the attribute name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "object": {
+                    "description": "The object to be renamed",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0,
+                    "contains": [
+                        "user name"
+                    ],
+                    "primary": true
+                },
+                "use_samaccountname": {
+                    "description": "Use sAMAccountName instead of distinguishedName",
+                    "data_type": "boolean",
+                    "order": 1
+                },
+                "new_name": {
+                    "description": "New name for the object",
+                    "data_type": "string",
+                    "required": true,
+                    "contains": [
+                        "user name"
+                    ],
+                    "order": 2,
+                    "primary": true
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.object",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=test user,ou=test,dc=test,dc=test,dc=com"
+                    ],
+                    "contains": [
+                        "user name"
+                    ],
+                    "column_name": "Object",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.use_samaccountname",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.new_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "cn=new name"
+                    ],
+                    "contains": [
+                        "user name"
+                    ],
+                    "column_name": "New Name",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully Renamed Object"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Summary: Successfully Renamed Object"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table",
+                "width": 10,
+                "height": 5,
+                "title": "Rename Object"
             },
             "versions": "EQ(*)"
         }
