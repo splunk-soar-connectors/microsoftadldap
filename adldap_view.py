@@ -1,6 +1,6 @@
 # File: adldap_view.py
 #
-# Copyright (c) 2021-2023 Splunk Inc.
+# Copyright (c) 2021-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,36 +18,36 @@ def get_ctx_result(result):
     summary = result.get_summary()
     data = result.get_data()
 
-    ctx_result['param'] = param
+    ctx_result["param"] = param
 
-    if (data):
-        ctx_result['data'] = data[0]
+    if data:
+        ctx_result["data"] = data[0]
 
-    if (summary):
-        ctx_result['summary'] = summary
+    if summary:
+        ctx_result["summary"] = summary
 
     return ctx_result
 
 
 def display_attributes(provides, all_app_runs, context):
-    context['results'] = results = []
-    context['attributes'] = []
+    context["results"] = results = []
+    context["attributes"] = []
     print("DEBUG all_app_runs = {}".format(all_app_runs))
     for summary, action_results in all_app_runs:
         for result in action_results:
             ctx_result = get_ctx_result(result)
-            if (not ctx_result):
+            if not ctx_result:
                 continue
             results.append(ctx_result)
     print("DEBUG ctx_result = {}".format(ctx_result))
 
     # populate keys into 'attributes' variable for django template
     try:
-        for n in list(ctx_result['data']['entries'][0]['attributes'].keys()):
-            if n not in context['attributes']:
-                context['attributes'].append(n)
+        for n in list(ctx_result["data"]["entries"][0]["attributes"].keys()):
+            if n not in context["attributes"]:
+                context["attributes"].append(n)
     except Exception as e:
-        context['attributes'] = False
-        context['error'] = str(e)
+        context["attributes"] = False
+        context["error"] = str(e)
 
-    return 'display_attributes.html'
+    return "display_attributes.html"
