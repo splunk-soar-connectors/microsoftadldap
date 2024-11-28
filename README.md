@@ -6,7 +6,7 @@ Connector Version: 2.3.0
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.2.2  
+Minimum Product Version: 6.3.0  
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
