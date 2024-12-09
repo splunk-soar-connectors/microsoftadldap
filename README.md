@@ -2,7 +2,7 @@
 # AD LDAP
 
 Publisher: Splunk  
-Connector Version: 2.3.1  
+Connector Version: 2.3.2  
 Product Vendor: Splunk  
 Product Name: Active Directory LDAP  
 Product Version Supported (regex): ".\*"  
@@ -102,8 +102,8 @@ that you would like to return.
   
 
 
-### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Active Directory LDAP asset in SOAR.
+### Configuration variables
+This table lists the configuration variables required to operate AD LDAP. These variables are specified when configuring a Active Directory LDAP asset in Splunk SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
