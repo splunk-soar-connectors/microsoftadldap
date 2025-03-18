@@ -1,6 +1,6 @@
 # File: adldap_view.py
 #
-# Copyright (c) 2021-2024 Splunk Inc.
+# Copyright (c) 2021-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,14 +32,14 @@ def get_ctx_result(result):
 def display_attributes(provides, all_app_runs, context):
     context["results"] = results = []
     context["attributes"] = []
-    print("DEBUG all_app_runs = {}".format(all_app_runs))
+    print(f"DEBUG all_app_runs = {all_app_runs}")
     for summary, action_results in all_app_runs:
         for result in action_results:
             ctx_result = get_ctx_result(result)
             if not ctx_result:
                 continue
             results.append(ctx_result)
-    print("DEBUG ctx_result = {}".format(ctx_result))
+    print(f"DEBUG ctx_result = {ctx_result}")
 
     # populate keys into 'attributes' variable for django template
     try:
