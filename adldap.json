@@ -21,18 +21,6 @@
     "latest_tested_versions": [
         "ldap3 on 25/10/2024"
     ],
-    "pip_dependencies": {
-        "wheel": [
-            {
-                "module": "ldap3",
-                "input_file": "wheels/shared/ldap3-2.6.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "pyasn1",
-                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
-            }
-        ]
-    },
     "configuration": {
         "server": {
             "description": "The Active Directory Server hostname, IP, or VIP for binding",
@@ -1488,5 +1476,17 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "ldap3",
+                "input_file": "wheels/shared/ldap3-2.6.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pyasn1",
+                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
+            }
+        ]
+    }
 }
