@@ -10,14 +10,17 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2021-2025 Splunk Inc.",
-    "app_version": "2.3.3",
-    "utctime_updated": "2025-05-06T20:06:19.952063Z",
+    "app_version": "2.3.4",
+    "utctime_updated": "2025-07-30T17:49:26.070201Z",
     "package_name": "phantom_adldap",
     "main_module": "adldap_connector.py",
     "min_phantom_version": "6.3.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
-    "python_version": ["3.9", "3.13"],
+    "python_version": [
+        "3.9",
+        "3.13"
+    ],
     "latest_tested_versions": [
         "ldap3 on 25/10/2024"
     ],
