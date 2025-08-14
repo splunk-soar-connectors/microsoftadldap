@@ -17,7 +17,7 @@
     "min_phantom_version": "6.3.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
-    "python_version": "3.9",
+    "python_version": "3.9, 3.13",
     "latest_tested_versions": [
         "ldap3 on 25/10/2024"
     ],
