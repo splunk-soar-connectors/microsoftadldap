@@ -1,9 +1,9 @@
 # AD LDAP
 
-Publisher: Splunk \
-Connector Version: 2.3.6 \
-Product Vendor: Splunk \
-Product Name: Active Directory LDAP \
+Publisher: Splunk <br>
+Connector Version: 2.3.6 <br>
+Product Vendor: Splunk <br>
+Product Name: Active Directory LDAP <br>
 Minimum Product Version: 6.3.0
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
@@ -89,25 +89,25 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[add group members](#action-add-group-members) - Adds one or more Active Directory objects to one or more groups \
-[remove group members](#action-remove-group-members) - Removes one or more Active Directory objects from one or more groups \
-[unlock account](#action-unlock-account) - Unlocks a locked Active Directory account \
-[disable account](#action-disable-account) - Disables an Active Directory account \
-[enable account](#action-enable-account) - Enables a disabled Active Directory account \
-[reset password](#action-reset-password) - Resets the password of a user, requiring the user to change password at next login \
-[set password](#action-set-password) - Set a user's password \
-[move object](#action-move-object) - Moves an entry in Active Directory \
-[run query](#action-run-query) - Query Active Directory LDAP \
-[get attributes](#action-get-attributes) - Get attributes of various principals \
-[set attribute](#action-set-attribute) - Add, delete, or replace an attribute of a user \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[add group members](#action-add-group-members) - Adds one or more Active Directory objects to one or more groups <br>
+[remove group members](#action-remove-group-members) - Removes one or more Active Directory objects from one or more groups <br>
+[unlock account](#action-unlock-account) - Unlocks a locked Active Directory account <br>
+[disable account](#action-disable-account) - Disables an Active Directory account <br>
+[enable account](#action-enable-account) - Enables a disabled Active Directory account <br>
+[reset password](#action-reset-password) - Resets the password of a user, requiring the user to change password at next login <br>
+[set password](#action-set-password) - Set a user's password <br>
+[move object](#action-move-object) - Moves an entry in Active Directory <br>
+[run query](#action-run-query) - Query Active Directory LDAP <br>
+[get attributes](#action-get-attributes) - Get attributes of various principals <br>
+[set attribute](#action-set-attribute) - Add, delete, or replace an attribute of a user <br>
 [rename object](#action-rename-object) - Rename the object
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -122,7 +122,7 @@ No Output
 
 Adds one or more Active Directory objects to one or more groups
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -155,7 +155,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Removes one or more Active Directory objects from one or more groups
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -188,7 +188,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Unlocks a locked Active Directory account
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -218,7 +218,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Disables an Active Directory account
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -246,7 +246,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Enables a disabled Active Directory account
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -274,7 +274,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Resets the password of a user, requiring the user to change password at next login
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -303,7 +303,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Set a user's password
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -337,7 +337,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Moves an entry in Active Directory
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -365,7 +365,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Query Active Directory LDAP
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action flexibly supports querying Active Directory using LDAP syntax.
@@ -398,7 +398,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get attributes of various principals
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action takes any number of principals (sAMAccountName, distinguishedName, or userprincipalname) and returns requested attributes. Separate with semi-colon (';').
@@ -430,7 +430,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add, delete, or replace an attribute of a user
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -463,7 +463,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Rename the object
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 When 'use_samaccountname' is false, the 'object' parameter should include the distinguishedName. Otherwise, use the sAMAccountName. For the 'new_name' parameter, append the new name to the attribute name. For example, to rename a user, use 'cn=New_user_name'; for an OU, use 'ou=New_OU_name'.
