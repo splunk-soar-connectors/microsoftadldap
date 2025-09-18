@@ -1481,7 +1481,19 @@
         "wheel": [
             {
                 "module": "ldap3",
-                "input_file": "wheels/shared/ldap3-2.6.1-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/ldap3-2.9.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pyasn1",
+                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
+            }
+        ]
+    },
+    "pip313_dependencies": {
+        "wheel": [
+            {
+                "module": "ldap3",
+                "input_file": "wheels/shared/ldap3-2.9.1-py2.py3-none-any.whl"
             },
             {
                 "module": "pyasn1",
