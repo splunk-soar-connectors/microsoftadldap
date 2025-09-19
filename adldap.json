@@ -17,7 +17,7 @@
     "min_phantom_version": "6.3.0",
     "fips_compliant": true,
     "app_wizard_version": "1.0.2",
-    "python_version": "3.9",
+    "python_version": "3.9, 3.13",
     "latest_tested_versions": [
         "ldap3 on 25/10/2024"
     ],
@@ -1485,7 +1485,7 @@
             },
             {
                 "module": "pyasn1",
-                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/pyasn1-0.6.1-py3-none-any.whl"
             }
         ]
     },
@@ -1497,7 +1497,7 @@
             },
             {
                 "module": "pyasn1",
-                "input_file": "wheels/shared/pyasn1-0.4.7-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/pyasn1-0.6.1-py3-none-any.whl"
             }
         ]
     }

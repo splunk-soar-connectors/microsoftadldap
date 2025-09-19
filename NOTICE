@@ -177,12 +177,12 @@ Library.
 
 @@@@============================================================================
 
-Library: pyasn1 - 0.4.7
-Homepage: https://github.com/etingof/pyasn1
+Library: pyasn1 - 0.6.1
+Homepage: https://github.com/pyasn1/pyasn1
 License: BSD License
 License Text:
 
-Copyright (c) 2005-2019, Ilya Etingof <etingof@gmail.com>
+Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
