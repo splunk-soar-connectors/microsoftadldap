@@ -19,10 +19,10 @@ repos:
       - id: check-merge-conflict
       - id: end-of-file-fixer
         exclude: ^NOTICE$
-        exclude_types: [ markdown ]
+        exclude_types: [markdown]
       - id: trailing-whitespace
         exclude: ^NOTICE$
-        exclude_types: [ markdown ]
+        exclude_types: [markdown]
       - id: requirements-txt-fixer
       - id: check-json
       - id: check-yaml
@@ -30,7 +30,7 @@ repos:
     rev: v0.11.7
     hooks:
       - id: ruff
-        args: [ "--fix", "--unsafe-fixes"] # Allow unsafe fixes (ruff pretty strict about what it can fix)
+        args: ["--fix", "--unsafe-fixes"] # Allow unsafe fixes (ruff pretty strict about what it can fix)
       - id: ruff-format
   - repo: https://github.com/djlint/djLint
     rev: v1.36.4
@@ -50,13 +50,12 @@ repos:
   - repo: https://github.com/returntocorp/semgrep
     rev: v1.136.0
     hooks:
-      - id: semgrep
-        additional_dependencies: ["setuptools==81.0.0"]
+      - id: semgrep-docker
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--no-verify']
+        args: ["--no-verify"]
         exclude_types: [json]
         exclude: "README.md"
   # Central hooks
@@ -66,23 +65,23 @@ repos:
       - id: build-docs
         language: python
         additional_dependencies: ["local-hooks"]
-        args: ['.']
+        args: ["."]
       - id: copyright
         language: python
         additional_dependencies: ["local-hooks"]
-        args: ['.']
+        args: ["."]
       - id: package-app-dependencies
         language: python
         additional_dependencies: ["local-hooks"]
       - id: notice-file
         language: python
         additional_dependencies: ["local-hooks"]
-        args: ['.']
+        args: ["."]
       - id: release-notes
         language: python
         additional_dependencies: ["local-hooks"]
-        args: ['.']
+        args: ["."]
       - id: static-tests
         language: python
         additional_dependencies: ["local-hooks"]
-        args: ['.']
+        args: ["."]

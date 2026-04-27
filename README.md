@@ -312,8 +312,8 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
 **user** | required | Specify the user whose password will be set. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-**password** | required | New password | string | |
-**confirm_password** | required | Re-type the password | string | |
+**password** | required | New password | password | |
+**confirm_password** | required | Re-type the password | password | |
 
 #### Action Output
 
@@ -494,7 +494,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
