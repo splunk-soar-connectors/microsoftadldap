@@ -312,16 +312,16 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
 **user** | required | Specify the user whose password will be set. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-**password** | required | New password | string | |
-**confirm_password** | required | Re-type the password | string | |
+**password** | required | New password | password | |
+**confirm_password** | required | Re-type the password | password | |
 
 #### Action Output
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.status | string | | success failed |
-action_result.parameter.confirm_password | string | | Thisisanewpw!123 |
-action_result.parameter.password | string | | Thisisanewpw!123 |
+action_result.parameter.confirm_password | password | | Thisisanewpw!123 |
+action_result.parameter.password | password | | Thisisanewpw!123 |
 action_result.parameter.use_samaccountname | boolean | | True False |
 action_result.parameter.user | string | `user name` | CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB |
 action_result.data.\*.samaccountname | string | | |
@@ -494,7 +494,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
