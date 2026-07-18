@@ -493,7 +493,12 @@ class AdLdapConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
         action_result.add_data({"message": ("Success" if ret else "Failed")})
-        action_result.set_status(ret)
+        if not ret:
+            summary["message"] = "Failed"
+            ldap_result = self._ldap_connection.result or {}
+            error_message = ldap_result.get("message") or ldap_result.get("description") or "Failed to set attribute"
+            return action_result.set_status(phantom.APP_ERROR, error_message)
+
         summary["summary"] = "Successfully Set Attribute"
         return action_result.set_status(phantom.APP_SUCCESS)
 
