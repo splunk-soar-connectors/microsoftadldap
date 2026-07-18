@@ -207,6 +207,17 @@ class AdLdapConnector(BaseConnector):
                 else:
                     n_groups.append(v)
 
+            if member_nf or group_nf:
+                unresolved = []
+                if member_nf:
+                    unresolved.append(f"members: {', '.join(member_nf)}")
+                if group_nf:
+                    unresolved.append(f"groups: {', '.join(group_nf)}")
+                return action_result.set_status(
+                    phantom.APP_ERROR,
+                    f"Unable to resolve all requested directory objects ({'; '.join(unresolved)})",
+                )
+
             # ensure we actually have a least 1 user and group to modify
             if len(n_members) > 0 and len(n_groups) > 0:
                 members = n_members
