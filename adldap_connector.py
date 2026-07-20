@@ -207,6 +207,17 @@ class AdLdapConnector(BaseConnector):
                 else:
                     n_groups.append(v)
 
+            if member_nf or group_nf:
+                unresolved = []
+                if member_nf:
+                    unresolved.append(f"members: {', '.join(member_nf)}")
+                if group_nf:
+                    unresolved.append(f"groups: {', '.join(group_nf)}")
+                return action_result.set_status(
+                    phantom.APP_ERROR,
+                    f"Unable to resolve all requested directory objects ({'; '.join(unresolved)})",
+                )
+
             # ensure we actually have a least 1 user and group to modify
             if len(n_members) > 0 and len(n_groups) > 0:
                 members = n_members
@@ -482,7 +493,12 @@ class AdLdapConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
         action_result.add_data({"message": ("Success" if ret else "Failed")})
-        action_result.set_status(ret)
+        if not ret:
+            summary["message"] = "Failed"
+            ldap_result = self._ldap_connection.result or {}
+            error_message = ldap_result.get("message") or ldap_result.get("description") or "Failed to set attribute"
+            return action_result.set_status(phantom.APP_ERROR, error_message)
+
         summary["summary"] = "Successfully Set Attribute"
         return action_result.set_status(phantom.APP_SUCCESS)
 
