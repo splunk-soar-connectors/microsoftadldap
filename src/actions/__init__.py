@@ -17,6 +17,7 @@ from . import (
     disable_account,
     enable_account,
     get_attributes,
+    make_request,
     move_object,
     remove_group_members,
     rename_object,

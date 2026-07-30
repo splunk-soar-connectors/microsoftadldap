@@ -93,6 +93,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [add group members](#action-add-group-members) - Adds one or more Active Directory objects to one or more groups <br>
 [disable account](#action-disable-account) - Disables an Active Directory account <br>
 [enable account](#action-enable-account) - Enables a disabled Active Directory account <br>
+[make request](#action-make-request) - make request <br>
 [move object](#action-move-object) - Moves an entry in Active Directory <br>
 [remove group members](#action-remove-group-members) - Removes one or more Active Directory objects from one or more groups <br>
 [rename object](#action-rename-object) - Rename the object <br>
@@ -210,6 +211,45 @@ action_result.parameter.user | string | `user name` | |
 action_result.data.\*.starting_status | string | | |
 action_result.data.\*.user_dn | string | | |
 action_result.summary.account_status | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'make request'
+
+make request
+
+Type: **generic** <br>
+Read only: **False**
+
+'make request' action for the app. Used to handle arbitrary HTTP requests with the app's asset
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**http_method** | required | The HTTP method for Universal API compatibility. Only the read-only methods GET, HEAD, and OPTIONS are supported; LDAP is queried via a search. Write methods are rejected. | string | |
+**endpoint** | required | LDAP search filter in LDAP syntax. Examples: '(objectClass=user)' or '(sAMAccountName=jdoe)'. | string | |
+**headers** | optional | Not used for LDAP requests. Providing headers will fail the action. | string | |
+**query_parameters** | optional | Semi-colon separated list of attributes to return (e.g. 'sAMAccountName;mail'). Defaults to 'sAMAccountName' if not provided. | string | |
+**body** | optional | Optional search base in distinguishedName format. If not provided, the 'defaultNamingContext' is used. | string | |
+**timeout** | optional | The timeout for the request in seconds. | numeric | |
+**verify_ssl** | optional | Not used for LDAP requests; SSL usage is controlled by the asset's 'Force SSL' and 'Validate SSL Cert' settings. | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.http_method | string | | |
+action_result.parameter.endpoint | string | | |
+action_result.parameter.headers | string | | |
+action_result.parameter.query_parameters | string | | |
+action_result.parameter.body | string | | |
+action_result.parameter.timeout | numeric | | |
+action_result.parameter.verify_ssl | boolean | | |
+action_result.data.\*.status_code | numeric | | 200 |
+action_result.data.\*.response_body | string | | {"entries": []} |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
