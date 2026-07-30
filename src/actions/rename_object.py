@@ -12,7 +12,7 @@
 # and limitations under the License.
 
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput
+from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
@@ -41,6 +41,9 @@ class RenameObjectParams(Params):
 
 
 class RenameObjectOutput(ActionOutput):
+    status: str = OutputField(
+        column_name="Status", example_values=["success", "failed"]
+    )
     message: str | None = None
 
 
@@ -76,4 +79,4 @@ def rename_object(
 
     soar.set_summary(RenameObjectSummary(summary="Successfully Renamed Object"))
     soar.set_message("Summary: Successfully Renamed Object")
-    return RenameObjectOutput(message="Success")
+    return RenameObjectOutput(status="success", message="Success")

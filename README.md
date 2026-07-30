@@ -339,6 +339,7 @@ action_result.message | string | | |
 action_result.parameter.object | string | `user name` | |
 action_result.parameter.use_samaccountname | boolean | | |
 action_result.parameter.new_name | string | `user name` | |
+action_result.data.\*.status | string | | success failed |
 action_result.data.\*.message | string | | |
 action_result.summary.summary | string | | |
 summary.total_objects | numeric | | 1 |
@@ -398,6 +399,7 @@ action_result.parameter.user | string | `user name` | |
 action_result.parameter.attribute | string | | |
 action_result.parameter.value | string | | |
 action_result.parameter.action | string | | |
+action_result.data.\*.status | string | | success failed |
 action_result.data.\*.message | string | | |
 action_result.summary.summary | string | | |
 summary.total_objects | numeric | | 1 |
