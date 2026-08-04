@@ -4,7 +4,7 @@ Publisher: Splunk <br>
 Connector Version: 2.3.9 <br>
 Product Vendor: Splunk <br>
 Product Name: Active Directory LDAP <br>
-Minimum Product Version: 7.0.0
+Minimum Product Version: 8.6.0
 
 App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation
 
@@ -367,6 +367,9 @@ action_result.status | string | | success failure |
 action_result.message | string | | |
 action_result.parameter.use_samaccountname | boolean | | |
 action_result.parameter.user | string | `user name` | |
+action_result.data.\*.user_dn | string | | |
+action_result.data.\*.samaccountname | string | | |
+action_result.data.\*.reset | boolean | | True False |
 action_result.summary.reset | boolean | | True False |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
@@ -431,6 +434,9 @@ action_result.parameter.use_samaccountname | boolean | | |
 action_result.parameter.user | string | `user name` | |
 action_result.parameter.password | string | | |
 action_result.parameter.confirm_password | string | | |
+action_result.data.\*.user_dn | string | | |
+action_result.data.\*.samaccountname | string | | |
+action_result.data.\*.set | boolean | | True False |
 action_result.summary.set | boolean | | True False |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
