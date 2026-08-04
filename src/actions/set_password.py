@@ -38,7 +38,9 @@ class SetPasswordParams(Params):
 
 
 class SetPasswordOutput(ActionOutput):
-    pass
+    user_dn: str | None = OutputField(column_name="User Dn")
+    samaccountname: str | None = OutputField(column_name="SAM Account Name")
+    set: bool | None = OutputField(column_name="Password Was Set")
 
 
 class SetPasswordSummary(ActionOutput):
@@ -62,11 +64,14 @@ def set_password(
 
     helper = LdapHelper(asset)
     user = params.user.lower()
+    data = {"user_dn": user}
 
     if params.use_samaccountname:
         resolved = helper.sam_to_dn([user])
         if resolved[user] is False:
             raise ValueError("No users found")
+        data["user_dn"] = resolved[user]
+        data["samaccountname"] = user
         user = resolved[user]
 
     try:
@@ -80,6 +85,8 @@ def set_password(
     if not set_ok:
         raise ValueError("Failed to set password")
 
+    data["set"] = True
+
     soar.set_summary(SetPasswordSummary(set=True))
     soar.set_message("Set: True")
-    return SetPasswordOutput()
+    return SetPasswordOutput(**data)

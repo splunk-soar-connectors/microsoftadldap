@@ -34,7 +34,9 @@ class ResetPasswordParams(Params):
 
 
 class ResetPasswordOutput(ActionOutput):
-    pass
+    user_dn: str | None = OutputField(column_name="User Dn")
+    samaccountname: str | None = OutputField(column_name="SAM Account Name")
+    reset: bool | None = OutputField(column_name="Password Was Reset")
 
 
 class ResetPasswordSummary(ActionOutput):
@@ -55,16 +57,21 @@ def reset_password(
 
     helper = LdapHelper(asset)
     user = params.user.lower()
+    data = {"user_dn": user}
 
     if params.use_samaccountname:
         resolved = helper.sam_to_dn([user])
         if resolved[user] is False:
             raise ValueError("No users found")
+        data["user_dn"] = resolved[user]
+        data["samaccountname"] = user
         user = resolved[user]
 
     if not helper.reset_password(user):
         raise ValueError("Failed to reset password")
 
+    data["reset"] = True
+
     soar.set_summary(ResetPasswordSummary(reset=True))
     soar.set_message("Reset: True")
-    return ResetPasswordOutput()
+    return ResetPasswordOutput(**data)
