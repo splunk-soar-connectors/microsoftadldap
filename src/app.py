@@ -46,6 +46,7 @@ app = App(
     publisher="Splunk",
     appid="a5730e5d-a396-4695-92c2-35ff391aaf45",
     fips_compliant=True,
+    min_phantom_version="8.6.0",
     asset_cls=Asset,
 )
 
