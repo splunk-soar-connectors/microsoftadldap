@@ -38,13 +38,13 @@ class SetPasswordParams(Params):
 
 
 class SetPasswordOutput(ActionOutput):
-    user_dn: str | None = OutputField(column_name="User Dn")
-    samaccountname: str | None = OutputField(column_name="SAM Account Name")
+    user_dn: str | None = None
+    samaccountname: str | None = None
     set: bool | None = OutputField(column_name="Password Was Set")
 
 
 class SetPasswordSummary(ActionOutput):
-    set: bool | None = OutputField(column_name="Password Was Set")
+    set: bool | None = None
 
 
 @app.action(

@@ -34,13 +34,13 @@ class ResetPasswordParams(Params):
 
 
 class ResetPasswordOutput(ActionOutput):
-    user_dn: str | None = OutputField(column_name="User Dn")
-    samaccountname: str | None = OutputField(column_name="SAM Account Name")
+    user_dn: str | None = None
+    samaccountname: str | None = None
     reset: bool | None = OutputField(column_name="Password Was Reset")
 
 
 class ResetPasswordSummary(ActionOutput):
-    reset: bool | None = OutputField(column_name="Password Was Reset")
+    reset: bool | None = None
 
 
 @app.action(
