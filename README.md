@@ -89,26 +89,29 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[test connectivity](#action-test-connectivity) - test connectivity <br>
 [add group members](#action-add-group-members) - Adds one or more Active Directory objects to one or more groups <br>
-[remove group members](#action-remove-group-members) - Removes one or more Active Directory objects from one or more groups <br>
-[unlock account](#action-unlock-account) - Unlocks a locked Active Directory account <br>
 [disable account](#action-disable-account) - Disables an Active Directory account <br>
 [enable account](#action-enable-account) - Enables a disabled Active Directory account <br>
-[reset password](#action-reset-password) - Resets the password of a user, requiring the user to change password at next login <br>
-[set password](#action-set-password) - Set a user's password <br>
+[make request](#action-make-request) - make request <br>
 [move object](#action-move-object) - Moves an entry in Active Directory <br>
-[run query](#action-run-query) - Query Active Directory LDAP <br>
-[get attributes](#action-get-attributes) - Get attributes of various principals <br>
+[remove group members](#action-remove-group-members) - Removes one or more Active Directory objects from one or more groups <br>
+[rename object](#action-rename-object) - Rename the object <br>
+[reset password](#action-reset-password) - Resets the password of a user, requiring the user to change password at next login <br>
 [set attribute](#action-set-attribute) - Add, delete, or replace an attribute of a user <br>
-[rename object](#action-rename-object) - Rename the object
+[set password](#action-set-password) - Set a user's password <br>
+[unlock account](#action-unlock-account) - Unlocks a locked Active Directory account <br>
+[run query](#action-run-query) - Query Active Directory LDAP <br>
+[get attributes](#action-get-attributes) - Get attributes of various principals
 
 ## action: 'test connectivity'
 
-Validate the asset configuration for connectivity using supplied configuration
+test connectivity
 
 Type: **test** <br>
 Read only: **True**
+
+Basic test for app.
 
 #### Action Parameters
 
@@ -116,7 +119,12 @@ No parameters are required for this action
 
 #### Action Output
 
-No Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'add group members'
 
@@ -137,17 +145,139 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.groups | string | | Domain Guests |
-action_result.parameter.members | string | | svc-test |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.data.\*.function | string | | added |
-action_result.data.\*.group | string | | cn=domain guests,cn=users,dc=test,dc=lab |
-action_result.data.\*.member | string | | cn=svc-test,ou=test,dc=test,dc=lab |
-action_result.summary | string | | |
-action_result.summary.found_user_records | numeric | | 1 |
-action_result.summary.requested_user_records | numeric | | 1 |
-action_result.message | string | | added member(s) to group(s) |
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.members | string | | |
+action_result.parameter.groups | string | | |
+action_result.data.\*.member | string | | |
+action_result.data.\*.function | string | | |
+action_result.data.\*.group | string | | |
+action_result.summary.requested_user_records | numeric | | |
+action_result.summary.found_user_records | numeric | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'disable account'
+
+Disables an Active Directory account
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
+**user** | required | Specify the user to enable/disable. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.data.\*.starting_status | string | | |
+action_result.data.\*.user_dn | string | | |
+action_result.summary.account_status | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'enable account'
+
+Enables a disabled Active Directory account
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
+**user** | required | Specify the user to enable/disable. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.data.\*.starting_status | string | | |
+action_result.data.\*.user_dn | string | | |
+action_result.summary.account_status | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'make request'
+
+make request
+
+Type: **generic** <br>
+Read only: **False**
+
+'make request' action for the app. Used to handle arbitrary HTTP requests with the app's asset
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**http_method** | required | The HTTP method for Universal API compatibility. Only the read-only methods GET, HEAD, and OPTIONS are supported; LDAP is queried via a search. Write methods are rejected. | string | |
+**endpoint** | required | LDAP search filter in LDAP syntax. Examples: '(objectClass=user)' or '(sAMAccountName=jdoe)'. | string | |
+**headers** | optional | Not used for LDAP requests. Providing headers will fail the action. | string | |
+**query_parameters** | optional | Semi-colon separated list of attributes to return (e.g. 'sAMAccountName;mail'). Defaults to 'sAMAccountName' if not provided. | string | |
+**body** | optional | Optional search base in distinguishedName format. If not provided, the 'defaultNamingContext' is used. | string | |
+**timeout** | optional | The timeout for the request in seconds. | numeric | |
+**verify_ssl** | optional | Not used for LDAP requests; SSL usage is controlled by the asset's 'Force SSL' and 'Validate SSL Cert' settings. | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.http_method | string | | |
+action_result.parameter.endpoint | string | | |
+action_result.parameter.headers | string | | |
+action_result.parameter.query_parameters | string | | |
+action_result.parameter.body | string | | |
+action_result.parameter.timeout | numeric | | |
+action_result.parameter.verify_ssl | boolean | | |
+action_result.data.\*.status_code | numeric | | 200 |
+action_result.data.\*.response_body | string | | {"entries": []} |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'move object'
+
+Moves an entry in Active Directory
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**object** | required | Specify the distinguishedName to move | string | |
+**destination_ou** | required | The distinguishedName of the OU the specified object will move to | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.object | string | | |
+action_result.parameter.destination_ou | string | | |
+action_result.data.\*.source_object | string | | |
+action_result.data.\*.destination_container | string | | |
+action_result.summary.moved | boolean | | True False |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
@@ -170,292 +300,16 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.groups | string | | Domain Guests |
-action_result.parameter.members | string | | svc-test |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.data.\*.function | string | | removed |
-action_result.data.\*.group | string | | cn=domain guests,cn=users,dc=test,dc=lab |
-action_result.data.\*.member | string | | cn=svc-test,ou=test,dc=test,dc=lab |
-action_result.summary | string | | |
-action_result.summary.found_user_records | numeric | | 1 |
-action_result.summary.requested_user_records | numeric | | 1 |
-action_result.message | string | | removed member(s) from group(s) |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'unlock account'
-
-Unlocks a locked Active Directory account
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Use sAMAccountName for user instead of distinguishedName(s) | boolean | |
-**user** | required | Specify the user to unlock. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB |
-action_result.data.\*.samaccountname | string | | |
-action_result.data.\*.unlocked | boolean | | True |
-action_result.data.\*.user_dn | string | | cn=defaultaccount,cn=users,dc=test,dc=lab |
-action_result.summary | string | | |
-action_result.summary.unlocked | numeric | | True |
-action_result.message | string | | Unlocked: True |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'disable account'
-
-Disables an Active Directory account
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
-**user** | required | Specify the user to disable. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB |
-action_result.data.\*.starting_status | string | | enabled |
-action_result.data.\*.user_dn | string | | cn=defaultaccount,cn=users,dc=test,dc=lab |
-action_result.summary.account_status | string | | disabled |
-action_result.message | string | | Account status: disabled |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'enable account'
-
-Enables a disabled Active Directory account
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
-**user** | required | Specify the user to enable. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB |
-action_result.data.\*.starting_status | string | | disabled |
-action_result.data.\*.user_dn | string | | cn=defaultaccount,cn=users,dc=test,dc=lab |
-action_result.summary.account_status | string | | enabled |
-action_result.message | string | | Account status: enabled |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'reset password'
-
-Resets the password of a user, requiring the user to change password at next login
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Use sAMAccountName instead of distinguishedName | boolean | |
-**user** | required | User whose attributes are to be modified | string | `user name` |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | SVC-TEST |
-action_result.data.\*.reset | numeric | | True |
-action_result.data.\*.samaccountname | string | | SVC-TEST |
-action_result.data.\*.user_dn | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
-action_result.summary.reset | numeric | | True |
-action_result.message | string | | Reset: True |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'set password'
-
-Set a user's password
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
-**user** | required | Specify the user whose password will be set. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
-**password** | required | New password | password | |
-**confirm_password** | required | Re-type the password | password | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.confirm_password | password | | Thisisanewpw!123 |
-action_result.parameter.password | password | | Thisisanewpw!123 |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | CN=DEFAULTACCOUNT,CN=USERS,DC=TEST,DC=LAB |
-action_result.data.\*.samaccountname | string | | |
-action_result.data.\*.set | boolean | | True |
-action_result.data.\*.user_dn | string | | cn=defaultaccount,cn=users,dc=test,dc=lab |
-action_result.summary | string | | |
-action_result.summary.set | numeric | | True |
-action_result.message | string | | Set: True |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'move object'
-
-Moves an entry in Active Directory
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**object** | required | Specify the distinguishedName to move | string | |
-**destination_ou** | required | The distinguishedName of the OU the specified object will move to | string | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.destination_ou | string | | OU=TEST,DC=TEST,DC=LAB |
-action_result.parameter.object | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
-action_result.data.\*.destination_container | string | | OU=TEST,DC=TEST,DC=LAB |
-action_result.data.\*.source_object | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
-action_result.summary.moved | string | | True |
-action_result.message | string | | Moved: True |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'run query'
-
-Query Active Directory LDAP
-
-Type: **investigate** <br>
-Read only: **True**
-
-This action flexibly supports querying Active Directory using LDAP syntax.
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**filter** | required | The LDAP filter (must be in LDAP Syntax) | string | |
-**search_base** | optional | The search base to use in its distinguishedName format. If not specified, the 'defaultNamingContext' will be used | string | |
-**attributes** | required | Semi-colon separated list of attributes to collect (e.g. sAMAccountName;mail) | string | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.attributes | string | | sAMAccountName |
-action_result.parameter.filter | string | | (sAMAccountName=\*) |
-action_result.parameter.search_base | string | | ou=test,dc=test,dc=lab |
-action_result.data.\*.entries.\*.attributes | string | | |
-action_result.data.\*.entries.\*.attributes.samaccountname | string | | SVC-TEST |
-action_result.data.\*.entries.\*.dn | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
-action_result.summary.total_objects | numeric | | 1 |
-action_result.message | string | | Total objects: 1 |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'get attributes'
-
-Get attributes of various principals
-
-Type: **investigate** <br>
-Read only: **True**
-
-This action takes any number of principals (sAMAccountName, distinguishedName, or userprincipalname) and returns requested attributes. Separate with semi-colon (';').
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**principals** | required | The semi-colon separated principals. These can be sAMAccountName, userprincipalname, or distinguishedName | string | |
-**attributes** | required | Semi-colon separated list of attributes to collect | string | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.attributes | string | | ObjectGUID |
-action_result.parameter.principals | string | | SVC-TEST;defaultaccount |
-action_result.data.\*.entries.\*.attributes | string | | |
-action_result.data.\*.entries.\*.attributes.objectGUID | string | | {a6c536dd-2487-41dd-8524-0037342505da} |
-action_result.data.\*.entries.\*.dn | string | | CN=SVC-TEST,OU=test,DC=TEST,DC=LAB |
-action_result.summary | string | | |
-action_result.summary.total_objects | numeric | | 2 |
-action_result.message | string | | Total objects: 2 |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'set attribute'
-
-Add, delete, or replace an attribute of a user
-
-Type: **generic** <br>
-Read only: **False**
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**use_samaccountname** | optional | Use sAMAccountName instead of distinguishedName | boolean | |
-**user** | required | User whose attributes are to be modified | string | `user name` |
-**attribute** | required | The attribute to modify (add/delete/replace) | string | |
-**value** | optional | Attribute value | string | |
-**action** | required | Semi-colon separated list of attributes to collect | string | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failed |
-action_result.parameter.action | string | | REPLACE |
-action_result.parameter.attribute | string | | mail |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.user | string | `user name` | Cn=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
-action_result.parameter.value | string | | svc_test@test.com |
-action_result.data.\*.message | string | | Success |
-action_result.summary.summary | string | | Successfully Set Attributes |
-action_result.message | string | | Summary: Successfully Set Attributes |
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.members | string | | |
+action_result.parameter.groups | string | | |
+action_result.data.\*.member | string | | |
+action_result.data.\*.function | string | | |
+action_result.data.\*.group | string | | |
+action_result.summary.requested_user_records | numeric | | |
+action_result.summary.found_user_records | numeric | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
@@ -480,13 +334,197 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.parameter.object | string | `user name` | cn=test user,ou=test,dc=test,dc=test,dc=com |
-action_result.parameter.use_samaccountname | boolean | | True False |
-action_result.parameter.new_name | string | `user name` | cn=new name |
-action_result.status | string | | success failed |
-action_result.data.\*.message | string | | Success |
-action_result.summary.summary | string | | Successfully Renamed Object |
-action_result.message | string | | Summary: Successfully Renamed Object |
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.object | string | `user name` | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.new_name | string | `user name` | |
+action_result.data.\*.status | string | | success failed |
+action_result.data.\*.message | string | | |
+action_result.summary.summary | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'reset password'
+
+Resets the password of a user, requiring the user to change password at next login
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Use sAMAccountName instead of distinguishedName | boolean | |
+**user** | required | User whose attributes are to be modified | string | `user name` |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.data.\*.user_dn | string | | |
+action_result.data.\*.samaccountname | string | | |
+action_result.data.\*.reset | boolean | | True False |
+action_result.summary.reset | boolean | | True False |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'set attribute'
+
+Add, delete, or replace an attribute of a user
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Use sAMAccountName instead of distinguishedName | boolean | |
+**user** | required | User whose attributes are to be modified | string | `user name` |
+**attribute** | required | The attribute to modify (add/delete/replace) | string | |
+**value** | optional | Attribute value | string | |
+**action** | required | Semi-colon separated list of attributes to collect | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.parameter.attribute | string | | |
+action_result.parameter.value | string | | |
+action_result.parameter.action | string | | |
+action_result.data.\*.status | string | | success failed |
+action_result.data.\*.message | string | | |
+action_result.summary.summary | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'set password'
+
+Set a user's password
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Specify sAMAccountName instead of distinguishedName | boolean | |
+**user** | required | Specify the user whose password will be set. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
+**password** | required | New password | password | |
+**confirm_password** | required | Re-type the password | password | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.parameter.password | string | | |
+action_result.parameter.confirm_password | string | | |
+action_result.data.\*.user_dn | string | | |
+action_result.data.\*.samaccountname | string | | |
+action_result.data.\*.set | boolean | | True False |
+action_result.summary.set | boolean | | True False |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'unlock account'
+
+Unlocks a locked Active Directory account
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**use_samaccountname** | optional | Use sAMAccountName for user instead of distinguishedName(s) | boolean | |
+**user** | required | Specify the user to unlock. If 'use samaccountname' is false, then this must be the user's distinguishedName | string | `user name` |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.use_samaccountname | boolean | | |
+action_result.parameter.user | string | `user name` | |
+action_result.data.\*.user_dn | string | | |
+action_result.data.\*.samaccountname | string | | |
+action_result.data.\*.unlocked | boolean | | True False |
+action_result.summary.unlocked | boolean | | True False |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'run query'
+
+Query Active Directory LDAP
+
+Type: **investigate** <br>
+Read only: **True**
+
+This action flexibly supports querying Active Directory using LDAP syntax.
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**filter** | required | The LDAP filter (must be in LDAP Syntax) | string | |
+**search_base** | optional | The search base to use in its distinguishedName format. If not specified, the 'defaultNamingContext' will be used | string | |
+**attributes** | required | Semi-colon separated list of attributes to collect (e.g. sAMAccountName;mail) | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.filter | string | | |
+action_result.parameter.search_base | string | | |
+action_result.parameter.attributes | string | | |
+action_result.data.\*.entries.\*.dn | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'get attributes'
+
+Get attributes of various principals
+
+Type: **investigate** <br>
+Read only: **True**
+
+This action takes any number of principals (sAMAccountName, distinguishedName, or userprincipalname) and returns requested attributes. Separate with semi-colon (';').
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**principals** | required | The semi-colon separated principals. These can be sAMAccountName, userprincipalname, or distinguishedName | string | |
+**attributes** | required | Semi-colon separated list of attributes to collect | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.principals | string | | |
+action_result.parameter.attributes | string | | |
+action_result.data.\*.entries.\*.dn | string | | CN=SVC-TEST,OU=TEST,DC=TEST,DC=LAB |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
