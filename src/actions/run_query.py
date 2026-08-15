@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField, PermissiveActionO
 from soar_sdk.params import Param, Params
 
 from ..app import Asset
+from ..helper import LdapHelper
 
 
 class RunQueryParams(Params):
@@ -67,8 +68,6 @@ def render_display_attributes(output: list[QueryOutput]) -> dict:
 
 
 def run_query(params: RunQueryParams, soar: SOARClient, asset: Asset) -> QueryOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     resp = helper.query(
         params.filter, params.attributes, search_base=params.search_base

@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class RenameObjectParams(Params):
@@ -64,8 +65,6 @@ class RenameObjectSummary(ActionOutput):
 def rename_object(
     params: RenameObjectParams, soar: SOARClient, asset: Asset
 ) -> RenameObjectOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     obj = params.object.lower()
 

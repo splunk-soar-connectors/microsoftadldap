@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class ResetPasswordParams(Params):
@@ -53,8 +54,6 @@ class ResetPasswordSummary(ActionOutput):
 def reset_password(
     params: ResetPasswordParams, soar: SOARClient, asset: Asset
 ) -> ResetPasswordOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     user = params.user.lower()
     data = {"user_dn": user}

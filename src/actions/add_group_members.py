@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class GroupMembersParams(Params):
@@ -83,8 +84,6 @@ def _resolve_members_and_groups(
 def _modify_group_members(
     params: GroupMembersParams, soar: SOARClient, asset: Asset, add: bool
 ) -> list[GroupMemberOutput]:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     members, groups, summary = _resolve_members_and_groups(helper, params)
 

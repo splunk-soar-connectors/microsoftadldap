@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class SetAttributeParams(Params):
@@ -69,8 +70,6 @@ class SetAttributeSummary(ActionOutput):
 def set_attribute(
     params: SetAttributeParams, soar: SOARClient, asset: Asset
 ) -> SetAttributeOutput:
-    from ..helper import LdapHelper
-
     if params.action in ("ADD", "REPLACE") and params.value is None:
         raise ValueError(
             f"Value parameter must be filled when using {params.action} action"

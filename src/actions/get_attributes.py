@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset
+from ..helper import LdapHelper
 from .run_query import AttributesOutput, EntriesOutput, render_display_attributes  # noqa: F401
 
 
@@ -43,8 +44,6 @@ class GetAttributesSummary(ActionOutput):
 def get_attributes(
     params: GetAttributesParams, soar: SOARClient, asset: Asset
 ) -> GetAttributesOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     principals = [i.strip() for i in params.principals.split(";")]
     resp = helper.get_attributes(principals, params.attributes)

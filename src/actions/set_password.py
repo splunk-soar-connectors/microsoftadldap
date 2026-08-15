@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class SetPasswordParams(Params):
@@ -57,8 +58,6 @@ class SetPasswordSummary(ActionOutput):
 def set_password(
     params: SetPasswordParams, soar: SOARClient, asset: Asset
 ) -> SetPasswordOutput:
-    from ..helper import LdapHelper
-
     if params.password != params.confirm_password:
         raise ValueError("Passwords do not match")
 
