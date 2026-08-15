@@ -15,6 +15,8 @@ from soar_sdk.abstract import SOARClient
 from soar_sdk.app import App
 from soar_sdk.asset import AssetField, BaseAsset
 
+from .helper import LdapHelper
+
 
 class Asset(BaseAsset):
     server: str = AssetField(
@@ -53,8 +55,6 @@ app = App(
 
 @app.test_connectivity()
 def test_connectivity(soar: SOARClient, asset: Asset) -> None:
-    from .helper import LdapHelper
-
     LdapHelper(asset).bind()
 
 
@@ -70,6 +70,7 @@ app.register_action(
     verbose="This action flexibly supports querying Active Directory using LDAP syntax.",
     view_handler=render_run_query,
     view_template="display_attributes.html",
+    read_only=True,
 )
 
 app.register_action(
@@ -80,6 +81,7 @@ app.register_action(
     "and returns requested attributes. Separate with semi-colon (';').",
     view_handler=render_display_attributes,
     view_template="display_attributes.html",
+    read_only=True,
 )
 
 
