@@ -1,7 +1,7 @@
 # AD LDAP
 
 Publisher: Splunk <br>
-Connector Version: 3.0.0 <br>
+Connector Version: 3.0.1 <br>
 Product Vendor: Splunk <br>
 Product Name: Active Directory LDAP <br>
 Minimum Product Version: 8.6.0
