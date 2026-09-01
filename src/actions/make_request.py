@@ -18,6 +18,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.params import MakeRequestParams, Param
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 _READ_ONLY_HTTP_METHODS = {"GET", "HEAD", "OPTIONS"}
@@ -77,8 +78,6 @@ class AdLdapMakeRequestOutput(ActionOutput):
 def make_request(
     params: AdLdapMakeRequestParams, asset: Asset
 ) -> AdLdapMakeRequestOutput:
-    from ..helper import LdapHelper
-
     if params.headers:
         raise ActionFailure(
             "headers are not supported for LDAP requests; remove the headers parameter."

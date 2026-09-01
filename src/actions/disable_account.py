@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class AccountStatusParams(Params):
@@ -45,8 +46,6 @@ class AccountStatusSummary(ActionOutput):
 def _set_account_status(
     params: AccountStatusParams, soar: SOARClient, asset: Asset, disable: bool
 ) -> AccountStatusOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     user = params.user.lower()
 

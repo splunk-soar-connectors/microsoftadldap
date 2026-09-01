@@ -9,7 +9,7 @@ authors = [
 dependencies = [
     "ldap3==2.9.1",
     "pyasn1==0.6.1",
-    "splunk-soar-sdk>=3.26.3",
+    "splunk-soar-sdk>=4.1.2",
 ]
 
 [tool.soar.app]

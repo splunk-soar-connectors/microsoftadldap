@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class UnlockAccountParams(Params):
@@ -52,8 +53,6 @@ class UnlockAccountSummary(ActionOutput):
 def unlock_account(
     params: UnlockAccountParams, soar: SOARClient, asset: Asset
 ) -> UnlockAccountOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     user = params.user.lower()
     data = {"user_dn": user}

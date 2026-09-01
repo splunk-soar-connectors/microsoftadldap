@@ -16,6 +16,7 @@ from soar_sdk.action_results import ActionOutput
 from soar_sdk.params import Param, Params
 
 from ..app import Asset, app
+from ..helper import LdapHelper
 
 
 class MoveObjectParams(Params):
@@ -50,8 +51,6 @@ class MoveObjectSummary(ActionOutput):
 def move_object(
     params: MoveObjectParams, soar: SOARClient, asset: Asset
 ) -> MoveObjectOutput:
-    from ..helper import LdapHelper
-
     helper = LdapHelper(asset)
     helper.move_object(params.object, params.destination_ou)
 
