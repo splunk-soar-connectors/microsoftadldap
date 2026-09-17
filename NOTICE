@@ -3344,9 +3344,9 @@ SOFTWARE.
 
 @@@@============================================================================
 
-Library: pyasn1 - 0.6.1
+Library: pyasn1 - 0.6.3
 Homepage: https://github.com/pyasn1/pyasn1
-License: BSD License
+License: BSD-2-Clause
 License Text:
 
 Copyright (c) 2005-2020, Ilya Etingof <etingof@gmail.com>
