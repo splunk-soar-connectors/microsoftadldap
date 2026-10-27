@@ -3,7 +3,7 @@ name = "adldap"
 version = "3.0.2"
 description = "App specifically designed for interacting with Microsoft Active Directory's LDAP Implementation"
 license = "Copyright (c) 2021-2026 Splunk Inc."
-requires-python = ">=3.13, <3.16, !=3.14.*"
+requires-python = ">=3.13, <3.14"
 authors = [
 ]
 dependencies = [
@@ -37,14 +37,9 @@ environments = [
     "sys_platform == 'linux' and platform_machine == 'aarch64' and python_version == '3.13'",
     "sys_platform == 'darwin' and platform_machine == 'x86_64' and python_version == '3.13'",
     "sys_platform == 'darwin' and platform_machine == 'arm64' and python_version == '3.13'",
-    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.15'",
-    "sys_platform == 'linux' and platform_machine == 'aarch64' and python_version == '3.15'",
-    "sys_platform == 'darwin' and platform_machine == 'x86_64' and python_version == '3.15'",
-    "sys_platform == 'darwin' and platform_machine == 'arm64' and python_version == '3.15'",
 ]
 required-environments = [
     "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.13'",
-    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.15'",
 ]
 
 [tool.ruff]
