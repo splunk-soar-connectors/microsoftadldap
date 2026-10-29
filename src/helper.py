@@ -13,6 +13,7 @@
 
 import json
 import ssl
+from pathlib import Path
 
 import ldap3
 import ldap3.extend.microsoft.addMembersToGroups
@@ -51,7 +52,8 @@ class LdapHelper:
             self._ldap_connection.unbind()
 
         if self._validate_ssl_cert:
-            tls = Tls(ca_certs_file=CA_CERTS_PEM, validate=ssl.CERT_REQUIRED)
+            ca_certs_file = CA_CERTS_PEM if Path(CA_CERTS_PEM).is_file() else None
+            tls = Tls(ca_certs_file=ca_certs_file, validate=ssl.CERT_REQUIRED)
         else:
             tls = Tls(validate=ssl.CERT_NONE)
 
